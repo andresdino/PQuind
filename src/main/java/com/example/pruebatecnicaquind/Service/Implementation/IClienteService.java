@@ -1,19 +1,20 @@
 package com.example.pruebatecnicaquind.Service.Implementation;
 
-import com.example.pruebatecnicaquind.Entity.Cliente;
+import com.example.pruebatecnicaquind.Dto.ClienteDTO;
+import com.example.pruebatecnicaquind.Entity.ClienteEntity;
 
 import java.util.List;
 
 public interface IClienteService {
 
-    public Cliente createCliente(Cliente cliente);
+    ClienteEntity createCliente(ClienteDTO clienteDTO);
 
-    public Cliente updateCliente(Long id, Cliente cliente);
+    public ClienteEntity updateCliente(Long id, ClienteDTO clienteDTO);
 
     public void deleteCliente(Long id);
 
-    public List<Cliente> getAllClientes();
+    public List<ClienteEntity> getAllClientes();
 
-    public Cliente getClienteById(Long id);
+    public ClienteEntity getClienteById(Long id);
 
 }

@@ -1,12 +1,13 @@
 package com.example.pruebatecnicaquind.Service.Implementation;
 
-import com.example.pruebatecnicaquind.Entity.Producto;
+import com.example.pruebatecnicaquind.Dto.ProductoDTO;
+import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 
 import java.math.BigDecimal;
 
 public interface IProductoService {
 
-    Producto createProducto(Producto producto);
+    ProductoEntity createProducto(ProductoDTO productoDTO);
 
     void cancelarCuenta(Long productoId);
 
