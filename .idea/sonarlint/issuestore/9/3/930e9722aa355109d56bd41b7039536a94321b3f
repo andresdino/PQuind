@@ -1,0 +1,8 @@
+
+_
+java:S2094"BRemove this empty class, write its code or make it an "interface".(‡€Œ8®ïËµÖ1
+X	java:S125	"<This block of commented-out lines of code should be removed.(Õš©Ñ8±ïËµÖ1
+h
+java:S1128"KRemove this unused import 'com.example.pruebatecnicaquind.Dto.ProductoDTO'.(óŞùğ8ÛÌøµÖ1
+n
+java:S1128"QRemove this unused import 'com.example.pruebatecnicaquind.Entity.ProductoEntity'.(ïÒµ¡8ÛÌøµÖ1
