@@ -1,15 +1,16 @@
-package com.example.pruebatecnicaquind.Entity.Dto;
+package com.example.pruebatecnicaquind.Dto;
 
-import com.example.pruebatecnicaquind.Config.EstadoCuenta;
-import com.example.pruebatecnicaquind.Entity.Producto;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
+import lombok.*;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@Data
+@Builder
+@Getter
+@Setter
+@AllArgsConstructor
 @NoArgsConstructor
 public class ProductoDTO implements Serializable {
     private Long id;
@@ -22,36 +23,6 @@ public class ProductoDTO implements Serializable {
     private LocalDateTime fechaModificacion;
     private Long clienteId;
     private boolean activa;
-
-    public ProductoDTO(Long id, String tipoCuenta, String numeroCuenta, EstadoCuenta estado,
-                       BigDecimal saldo, boolean exentaGMF, LocalDateTime fechaCreacion,
-                       LocalDateTime fechaModificacion, Long clienteId, boolean activa) {
-        this.id = id;
-        this.tipoCuenta = tipoCuenta;
-        this.numeroCuenta = numeroCuenta;
-        this.estado = estado;
-        this.saldo = saldo;
-        this.exentaGMF = exentaGMF;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaModificacion = fechaModificacion;
-        this.clienteId = clienteId;
-        this.activa = activa;
-    }
-
-    public static ProductoDTO fromProducto(Producto producto) {
-        return new ProductoDTO(
-                producto.getId(),
-                producto.getTipoCuenta(),
-                producto.getNumeroCuenta(),
-                producto.getEstado(),
-                producto.getSaldo(),
-                producto.isExentaGMF(),
-                producto.getFechaCreacion(),
-                producto.getFechaModificacion(),
-                producto.getCliente() != null ? producto.getCliente().getId() : null,
-                producto.isActiva()
-        );
-    }
 
 
 

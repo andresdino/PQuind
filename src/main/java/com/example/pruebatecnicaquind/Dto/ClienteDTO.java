@@ -1,7 +1,7 @@
-package com.example.pruebatecnicaquind.Entity.Dto;
+package com.example.pruebatecnicaquind.Dto;
 
-import com.example.pruebatecnicaquind.Entity.Cliente;
-import com.example.pruebatecnicaquind.Entity.Producto;
+import com.example.pruebatecnicaquind.Entity.ProductoEntity;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 public class ClienteDTO implements Serializable {
     Long id;
     String tipoIdentificacion;
@@ -23,7 +24,7 @@ public class ClienteDTO implements Serializable {
     String fechaNacimiento;
     LocalDateTime fechaCreacion;
     LocalDateTime fechaModificacion;
-    private Producto productos;
+    private ProductoEntity productos;
 
 
     public ClienteDTO(Long id, String tipoIdentificacion, Long numeroIdentificacion,
@@ -38,20 +39,6 @@ public class ClienteDTO implements Serializable {
         this.fechaNacimiento = fechaNacimiento;
         this.fechaCreacion = fechaCreacion;
         this.fechaModificacion = fechaModificacion;
-    }
-
-    public static ClienteDTO fromCliente(Cliente cliente) {
-        return new ClienteDTO(
-                cliente.getId(),
-                cliente.getTipoIdentificacion(),
-                cliente.getNumeroIdentificacion(),
-                cliente.getNombre(),
-                cliente.getApellido(),
-                cliente.getEmail(),
-                cliente.getFechaNacimiento() != null ? cliente.getFechaNacimiento() : null,
-                cliente.getFechaCreacion(),
-                cliente.getFechaModificacion()
-        );
     }
 
 
