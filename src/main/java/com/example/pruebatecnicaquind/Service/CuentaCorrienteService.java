@@ -1,7 +1,11 @@
 package com.example.pruebatecnicaquind.Service;
 
-import com.example.pruebatecnicaquind.Entity.Cliente;
-import com.example.pruebatecnicaquind.Entity.Cuentas.CuentaCorriente;
+import com.example.pruebatecnicaquind.Constants.MessageAplication;
+import com.example.pruebatecnicaquind.Dto.EditarEstadoCuentaDto;
+import com.example.pruebatecnicaquind.Entity.ClienteEntity;
+import com.example.pruebatecnicaquind.Entity.CuentaAhorroEntity;
+import com.example.pruebatecnicaquind.Entity.CuentaCorrienteEntity;
+import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
 import com.example.pruebatecnicaquind.Repository.CuentaCorrienteRepository;
 import com.example.pruebatecnicaquind.Service.Implementation.ICuentaCorrienteService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 
 @Service
@@ -20,54 +25,77 @@ public class CuentaCorrienteService implements ICuentaCorrienteService {
     private CuentaCorrienteRepository cuentaCorrienteRepository;
 
     @Override
-    public CuentaCorriente crearCuentaCorriente(Cliente cliente) {
-        CuentaCorriente cuentaCorriente = new CuentaCorriente();
-        cuentaCorriente.setCliente(cliente);
-        cuentaCorriente.setFechaCreacion(LocalDateTime.now());
-        cuentaCorriente.setActiva(true);
-        return cuentaCorrienteRepository.save(cuentaCorriente);
+    public CuentaCorrienteEntity crearCuentaCorriente(ClienteEntity clienteEntity) {
+        CuentaCorrienteEntity cuentaCorrienteEntity = new CuentaCorrienteEntity();
+        cuentaCorrienteEntity.setClienteEntity(clienteEntity);
+        cuentaCorrienteEntity.setFechaCreacion(LocalDateTime.now());
+        cuentaCorrienteEntity.setActiva(true);
+        return cuentaCorrienteRepository.save(cuentaCorrienteEntity);
     }
 
     @Override
-    @Transactional
-    public void consignar(Long cuentaCorrienteId, BigDecimal monto) {
-        CuentaCorriente cuentaCorriente = cuentaCorrienteRepository.findById(cuentaCorrienteId)
+    public Object updateEstadoCuenta(EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        Optional<CuentaCorrienteEntity> cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(editarEstadoCuentaDto.getNumeroCuenta());
+        if (cuentaCorrienteEntity.isPresent()){
+            cuentaCorrienteEntity.get().setEstado(editarEstadoCuentaDto.getEstado());
+            cuentaCorrienteEntity.get().setFechaModificacion(LocalDateTime.now());
+            cuentaCorrienteRepository.save(cuentaCorrienteEntity.get());
+        }
+        return MessageAplication.ACCOUNTNOTFOUND;
+    }
+
+    @Override
+    public Object cancelarCuentaCorriente(EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        Optional<CuentaCorrienteEntity> cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(editarEstadoCuentaDto.getNumeroCuenta());
+        if (cuentaCorrienteEntity.isPresent()){
+            if (cuentaCorrienteEntity.get().getSaldo().compareTo(BigDecimal.ZERO) == 0) {
+                cuentaCorrienteEntity.get().setFechaModificacion(LocalDateTime.now());
+                cuentaCorrienteEntity.get().setEstado(EstadoCuenta.CANCELADA);
+                cuentaCorrienteRepository.save(cuentaCorrienteEntity.get());
+            }
+            return MessageAplication.ACCOUNTCANNOTCANCELLED;
+        }
+        return MessageAplication.ACCOUNTNOTFOUND;
+    }
+
+    @Override
+    public void consignar(String cuentaCorrienteId, BigDecimal monto) {
+        CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(cuentaCorrienteId)
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaCorrienteId));
 
-        // Lógica de consignación
-        cuentaCorriente.setSaldo(cuentaCorriente.getSaldo().add(monto));
-        cuentaCorriente.setFechaModificacion(LocalDateTime.now());
+        cuentaCorrienteEntity.setSaldo(cuentaCorrienteEntity.getSaldo().add(monto));
+        cuentaCorrienteEntity.setFechaModificacion(LocalDateTime.now());
 
-        cuentaCorrienteRepository.save(cuentaCorriente);
+        cuentaCorrienteRepository.save(cuentaCorrienteEntity);
     }
 
     @Override
-    @Transactional
-    public void retirar(Long cuentaCorrienteId, BigDecimal monto) {
-        CuentaCorriente cuentaCorriente = cuentaCorrienteRepository.findById(cuentaCorrienteId)
+    public void retirar(String cuentaCorrienteId, BigDecimal monto) {
+        CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(cuentaCorrienteId)
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaCorrienteId));
 
         // Lógica de retiro
-        if (cuentaCorriente.getSaldo().compareTo(monto) >= 0) {
-            cuentaCorriente.setSaldo(cuentaCorriente.getSaldo().subtract(monto));
-            cuentaCorriente.setFechaModificacion(LocalDateTime.now());
+        if (cuentaCorrienteEntity.getSaldo().compareTo(monto) >= 0) {
+            cuentaCorrienteEntity.setSaldo(cuentaCorrienteEntity.getSaldo().subtract(monto));
+            cuentaCorrienteEntity.setFechaModificacion(LocalDateTime.now());
 
-            cuentaCorrienteRepository.save(cuentaCorriente);
+            cuentaCorrienteRepository.save(cuentaCorrienteEntity);
         } else {
             throw new IllegalStateException("Saldo insuficiente para realizar el retiro.");
         }
     }
 
+
     @Override
     @Transactional
-    public void transferir(Long cuentaCorrienteId, Long destinoId, BigDecimal monto) {
-        CuentaCorriente cuentaCorriente = cuentaCorrienteRepository.findById(cuentaCorrienteId)
+    public void transferir(String cuentaCorrienteId, Long destinoId, BigDecimal monto) {
+        CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(cuentaCorrienteId)
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaCorrienteId));
 
         // Lógica de transferencia
         retirar(cuentaCorrienteId, monto);
 
-        CuentaCorriente destino = cuentaCorrienteRepository.findById(destinoId)
+        CuentaCorrienteEntity destino = cuentaCorrienteRepository.findById(destinoId)
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente de destino no encontrada con ID: " + destinoId));
 
         destino.consignar(monto);

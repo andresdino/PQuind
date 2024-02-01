@@ -1,13 +1,18 @@
 package com.example.pruebatecnicaquind.Service;
 
-import com.example.pruebatecnicaquind.Entity.Producto;
+import com.example.pruebatecnicaquind.Dto.ProductoDTO;
+import com.example.pruebatecnicaquind.Entity.ProductoEntity;
+import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
 import com.example.pruebatecnicaquind.Repository.ProductoRepository;
 import com.example.pruebatecnicaquind.Service.Implementation.IProductoService;
+import com.example.pruebatecnicaquind.mapper.ProductoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class ProductoService implements IProductoService {
@@ -18,56 +23,74 @@ public class ProductoService implements IProductoService {
 
 
     @Override
-    public Producto createProducto(Producto producto) {
-        return productoRepository.save(producto);
+    public ProductoEntity createProducto(ProductoDTO productoDTO) {
+        productoDTO.setFechaModificacion(LocalDateTime.now());
+        productoDTO.setEstado(EstadoCuenta.ACTIVA);
+        ProductoEntity saveInformation = ProductoMapper.dtoToProductoEntity(productoDTO);
+        return productoRepository.save(saveInformation);
+    }
+
+    @Override
+    public void cancelarCuenta(Long productoId) {
+
     }
 
     @Override
     public void realizarTransaccion(Long productoId, BigDecimal monto) {
-        Producto producto = productoRepository.findById(productoId)
+        ProductoEntity productoEntity = productoRepository.findById(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productoId));
-        producto.realizarTransaccion(monto);
-        productoRepository.save(producto);
+        productoEntity.realizarTransaccion(monto);
+        productoRepository.save(productoEntity);
     }
 
     @Transactional
     public void consignar(Long productoId, BigDecimal monto) {
-        Producto producto = productoRepository.findById(productoId)
+        ProductoEntity productoEntity = productoRepository.findById(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productoId));
 
-        producto.consignar(monto);
-        productoRepository.save(producto);
+        productoEntity.setSaldo(productoEntity.getSaldo().add(monto));
+        productoEntity.setFechaModificacion(LocalDateTime.now());
+        productoRepository.save(productoEntity);
     }
 
     @Transactional
     public void retirar(Long productoId, BigDecimal monto) {
-        Producto producto = productoRepository.findById(productoId)
+        ProductoEntity productoEntity = productoRepository.findById(productoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productoId));
 
-        producto.retirar(monto);
-        productoRepository.save(producto);
+        if (monto.compareTo(BigDecimal.ZERO) > 0 && productoEntity.getSaldo().compareTo(monto) >= 0) {
+            productoEntity.setSaldo(productoEntity.getSaldo().subtract(monto));
+            productoEntity.setFechaModificacion(LocalDateTime.now());
+        } else {
+            throw new IllegalStateException("Monto inválido para retiro.");
+        }
+
+        productoRepository.save(productoEntity);
     }
 
     @Transactional
     public void transferir(Long origenProductoId, Long destinoProductoId, BigDecimal monto) {
-        Producto origen = productoRepository.findById(origenProductoId)
+        ProductoEntity origen = productoRepository.findById(origenProductoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto de origen no encontrado con ID: " + origenProductoId));
 
-        Producto destino = productoRepository.findById(destinoProductoId)
+
+        ProductoEntity destino = productoRepository.findById(destinoProductoId)
                 .orElseThrow(() -> new IllegalArgumentException("Producto de destino no encontrado con ID: " + destinoProductoId));
 
-        origen.transferir(destino, monto);
+        if (monto.compareTo(BigDecimal.ZERO) > 0 && origen.getSaldo().compareTo(monto) >= 0) {
+            origen.setSaldo(origen.getSaldo().subtract(monto));
+            origen.setFechaModificacion(LocalDateTime.now());
+        } else {
+            throw new IllegalStateException("Monto inválido para retiro.");
+        }
+
+        destino.setSaldo(destino.getSaldo().add(monto));
+        destino.setFechaModificacion(LocalDateTime.now());
+
         productoRepository.save(origen);
         productoRepository.save(destino);
     }
 
-    @Transactional
-    public void cancelarCuenta(Long productoId) {
-        Producto producto = productoRepository.findById(productoId)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productoId));
 
-        producto.cancelarCuenta();
-        productoRepository.save(producto);
-    }
 
 }
