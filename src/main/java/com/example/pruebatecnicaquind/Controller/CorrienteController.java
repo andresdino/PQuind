@@ -1,10 +1,10 @@
 package com.example.pruebatecnicaquind.Controller;
 
-import com.example.pruebatecnicaquind.Entity.Cliente;
-import com.example.pruebatecnicaquind.Entity.Cuentas.CuentaCorriente;
-import com.example.pruebatecnicaquind.Entity.Dto.ClienteDTO;
+import com.example.pruebatecnicaquind.Dto.EditarEstadoCuentaDto;
+import com.example.pruebatecnicaquind.Entity.ClienteEntity;
+import com.example.pruebatecnicaquind.Entity.CuentaCorrienteEntity;
 import com.example.pruebatecnicaquind.Service.ClienteService;
-import com.example.pruebatecnicaquind.Service.CuentaCorrienteService;
+import com.example.pruebatecnicaquind.Service.Implementation.ICuentaCorrienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 public class CorrienteController {
 
     @Autowired
-    private CuentaCorrienteService cuentaCorrienteService;
+    private ICuentaCorrienteService cuentaCorrienteService;
 
     @Autowired
     private ClienteService clienteService;
@@ -25,11 +25,11 @@ public class CorrienteController {
     // Endpoints para Corriente
 
     @PostMapping("/crear/{clienteId}")
-    public ResponseEntity<CuentaCorriente> crearCuentaCorriente(@PathVariable Long clienteId) {
+    public ResponseEntity<CuentaCorrienteEntity> crearCuentaCorriente(@PathVariable Long clienteId) {
         try {
-            Cliente cliente = clienteService.getClienteById(clienteId);
-            CuentaCorriente cuentaCorriente = cuentaCorrienteService.crearCuentaCorriente(cliente);
-            return new ResponseEntity<>(cuentaCorriente, HttpStatus.CREATED);
+            ClienteEntity clienteEntity = clienteService.getClienteById(clienteId);
+            CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteService.crearCuentaCorriente(clienteEntity);
+            return new ResponseEntity<>(cuentaCorrienteEntity, HttpStatus.CREATED);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cliente con ID no encontrado", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -37,8 +37,18 @@ public class CorrienteController {
         }
     }
 
+    @PatchMapping("/cancelarCuentaCorriente")
+    public Object updateEstadoCuenta(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        return cuentaCorrienteService.updateEstadoCuenta(editarEstadoCuentaDto);
+    }
+
+    @PatchMapping("/cancelarCuentaCorriente")
+    public Object cancelarCuentaCorriente(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        return cuentaCorrienteService.cancelarCuentaCorriente(editarEstadoCuentaDto);
+    }
+
     @PostMapping("/consignar/{cuentaCorrienteId}")
-    public ResponseEntity<Void> consignar(@PathVariable Long cuentaCorrienteId, @RequestParam BigDecimal monto) {
+    public ResponseEntity<Void> consignar(@PathVariable String cuentaCorrienteId, @RequestParam BigDecimal monto) {
         try {
             cuentaCorrienteService.consignar(cuentaCorrienteId, monto);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -50,7 +60,7 @@ public class CorrienteController {
     }
 
     @PostMapping("/retirar/{cuentaCorrienteId}")
-    public ResponseEntity<Void> retirar(@PathVariable Long cuentaCorrienteId, @RequestParam BigDecimal monto) {
+    public ResponseEntity<Void> retirar(@PathVariable String cuentaCorrienteId, @RequestParam BigDecimal monto) {
         try {
             cuentaCorrienteService.retirar(cuentaCorrienteId, monto);
             return new ResponseEntity<>(HttpStatus.OK);
@@ -62,7 +72,7 @@ public class CorrienteController {
     }
 
     @PostMapping("/transferir")
-    public ResponseEntity<Void> transferir(@RequestParam Long origenCuentaCorrienteId, @RequestParam Long destinoCuentaCorrienteId, @RequestParam BigDecimal monto) {
+    public ResponseEntity<Void> transferir(@RequestParam String origenCuentaCorrienteId, @RequestParam Long destinoCuentaCorrienteId, @RequestParam BigDecimal monto) {
         try {
             cuentaCorrienteService.transferir(origenCuentaCorrienteId, destinoCuentaCorrienteId, monto);
             return new ResponseEntity<>(HttpStatus.OK);

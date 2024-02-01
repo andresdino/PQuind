@@ -1,7 +1,7 @@
 package com.example.pruebatecnicaquind.Controller;
 
-import com.example.pruebatecnicaquind.Entity.Cliente;
-import com.example.pruebatecnicaquind.Entity.Dto.ClienteDTO;
+import com.example.pruebatecnicaquind.Entity.ClienteEntity;
+import com.example.pruebatecnicaquind.Dto.ClienteDTO;
 import com.example.pruebatecnicaquind.Service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,23 +17,21 @@ public class ClienteController {
     @Autowired
     private ClienteService clienteService;
 
-    // Endpoints para Cliente
-
     @PostMapping("/crear")
-    public ResponseEntity<ClienteDTO> createCliente(@RequestBody Cliente cliente){
+    public ResponseEntity<ClienteDTO> createCliente(@RequestBody ClienteDTO clienteDTO){
         try {
-            Cliente nuevoCliente = clienteService.createCliente(cliente);
-            return new ResponseEntity(nuevoCliente, HttpStatus.CREATED);
+            ClienteEntity nuevoClienteEntity = clienteService.createCliente(clienteDTO);
+            return new ResponseEntity(nuevoClienteEntity, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity("Error al crear el cliente", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @PutMapping("/clientes/{id}")
-    public ResponseEntity<Cliente> updateCliente(@PathVariable Long id, @RequestBody Cliente cliente) {
+    @PutMapping("/cliente/{id}")
+    public ResponseEntity<ClienteEntity> updateCliente(@PathVariable Long id, @RequestBody ClienteDTO clienteDTO) {
         try {
-            Cliente clienteActualizado = clienteService.updateCliente(id, cliente);
-            return new ResponseEntity(clienteActualizado, HttpStatus.OK);
+            ClienteEntity clienteEntityActualizado = clienteService.updateCliente(id, clienteDTO);
+            return new ResponseEntity(clienteEntityActualizado, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cliente con ID no encontrado", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -41,7 +39,7 @@ public class ClienteController {
         }
     }
 
-    @DeleteMapping("/clientes/{id}")
+    @DeleteMapping("/cliente/{id}")
     public ResponseEntity<Void> deleteCliente(@PathVariable Long id) {
         try {
             clienteService.deleteCliente(id);
@@ -54,20 +52,20 @@ public class ClienteController {
     }
 
     @GetMapping("/clientes")
-    public ResponseEntity<List<Cliente>> getAllClientes() {
+    public ResponseEntity<List<ClienteEntity>> getAllClientes() {
         try {
-            List<Cliente> clientes = clienteService.getAllClientes();
-            return new ResponseEntity(clientes, HttpStatus.OK);
+            List<ClienteEntity> clienteEntities = clienteService.getAllClientes();
+            return new ResponseEntity(clienteEntities, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity("Error al obtener la lista de clientes", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @GetMapping("/clientes/{id}")
-    public ResponseEntity<Cliente> getClienteById(@PathVariable Long id) {
+    public ResponseEntity<ClienteEntity> getClienteById(@PathVariable Long id) {
         try {
-            Cliente cliente = clienteService.getClienteById(id);
-            return new ResponseEntity(cliente, HttpStatus.OK);
+            ClienteEntity clienteEntity = clienteService.getClienteById(id);
+            return new ResponseEntity(clienteEntity, HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cliente con ID no encontrado", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
