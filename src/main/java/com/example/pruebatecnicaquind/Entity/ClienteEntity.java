@@ -1,6 +1,5 @@
 package com.example.pruebatecnicaquind.Entity;
 
-import com.example.pruebatecnicaquind.Dto.ClienteDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -11,22 +10,30 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
+
+/***
+ * Clase que representa la entidad cliente en la Base de datos
+ *
+ */
 @Entity
+@Table(name = "cliente")
 @Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Cliente {
+public class ClienteEntity extends Auditoria{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotEmpty(message = "El tipo de identificación no puede estar vacío")
+    @Column(name = "tipo_identificacion")
     private String tipoIdentificacion;
 
     @NotNull(message = "El número de identificación no puede estar vacío")
+    @Column(name = "numero_identificacion")
     private Long numeroIdentificacion;
 
     @NotEmpty(message = "El nombre no puede estar vacío")
@@ -42,26 +49,7 @@ public class Cliente {
 
     private String fechaNacimiento;
 
-    private LocalDateTime fechaCreacion;
+    @OneToMany(mappedBy = "clienteEntity", cascade = CascadeType.ALL)
+    private List<ProductoEntity> productoEntities;
 
-    private LocalDateTime fechaModificacion;
-
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    private List<Producto> productos;
-
-//MAPPER
-    public static Cliente fromClienteDTO(ClienteDTO clienteDTO) {
-        Cliente cliente = new Cliente();
-        cliente.setId(clienteDTO.getId());
-        cliente.setTipoIdentificacion(clienteDTO.getTipoIdentificacion());
-        cliente.setNumeroIdentificacion(clienteDTO.getNumeroIdentificacion());
-        cliente.setNombre(clienteDTO.getNombre());
-        cliente.setApellido(clienteDTO.getApellido());
-        cliente.setEmail(clienteDTO.getEmail());
-        cliente.setFechaNacimiento(clienteDTO.getFechaNacimiento());
-        cliente.setFechaCreacion(clienteDTO.getFechaCreacion());
-        cliente.setFechaModificacion(clienteDTO.getFechaModificacion());
-
-        return cliente;
-    }
 }
