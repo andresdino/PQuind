@@ -1,6 +1,6 @@
 package com.example.pruebatecnicaquind.Entity;
 
-import com.example.pruebatecnicaquind.Entity.Cuentas.EstadoCuenta;
+import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,9 +11,10 @@ import java.time.LocalDateTime;
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public abstract class Producto {
+public abstract class ProductoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,11 +41,9 @@ public abstract class Producto {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
-    private Cliente cliente;
+    private ClienteEntity clienteEntity;
 
     private boolean activa;
-
-    ////////////////////////  VERIFICAR   ///////////////////////////////
 
     public abstract void realizarTransaccion(BigDecimal monto);
 
@@ -64,7 +63,7 @@ public abstract class Producto {
         }
     }
 
-    public void transferir(Producto destino, BigDecimal monto) {
+    public void transferir(ProductoEntity destino, BigDecimal monto) {
         // Lógica genérica de transferencia para productos financieros
         if (monto.compareTo(BigDecimal.ZERO) > 0 && this.getSaldo().compareTo(monto) >= 0) {
             this.retirar(monto);
