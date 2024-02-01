@@ -1,7 +1,8 @@
 package com.example.pruebatecnicaquind.Controller;
 
-import com.example.pruebatecnicaquind.Entity.Producto;
-import com.example.pruebatecnicaquind.Service.ProductoService;
+import com.example.pruebatecnicaquind.Dto.ProductoDTO;
+import com.example.pruebatecnicaquind.Entity.ProductoEntity;
+import com.example.pruebatecnicaquind.Service.Implementation.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +16,15 @@ import java.math.BigDecimal;
 public class ProductosController {
 
     @Autowired
-    private ProductoService productoService;
+    private IProductoService iProductoService;
 
     // Endpoints para Producto
 
     @PostMapping("/crear")
-    public ResponseEntity<Producto> createProducto(@RequestBody Producto producto) {
+    public ResponseEntity<ProductoEntity> createProducto(@RequestBody ProductoDTO productoDTO) {
         try {
-            Producto nuevoProducto = productoService.createProducto(producto);
-            return new ResponseEntity<>(nuevoProducto, HttpStatus.CREATED);
+            ProductoEntity nuevoProductoEntity = iProductoService.createProducto(productoDTO);
+            return new ResponseEntity<>(nuevoProductoEntity, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity("Error al crear el producto", HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -32,7 +33,7 @@ public class ProductosController {
     @PostMapping("/transaccion/{productoId}")
     public ResponseEntity<String> realizarTransaccion(@PathVariable Long productoId, @RequestParam BigDecimal monto) {
         try {
-            productoService.realizarTransaccion(productoId, monto);
+            iProductoService.realizarTransaccion(productoId, monto);
             return new ResponseEntity<>("Transacción realizada con éxito", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Producto no encontrado o monto inválido", HttpStatus.NOT_FOUND);
@@ -44,7 +45,7 @@ public class ProductosController {
     @PostMapping("/consignar/{productoId}")
     public ResponseEntity<String> consignar(@PathVariable Long productoId, @RequestParam BigDecimal monto) {
         try {
-            productoService.consignar(productoId, monto);
+            iProductoService.consignar(productoId, monto);
             return new ResponseEntity<>("Consignación realizada con éxito", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Producto no encontrado o monto inválido", HttpStatus.NOT_FOUND);
@@ -56,7 +57,7 @@ public class ProductosController {
     @PostMapping("/retirar/{productoId}")
     public ResponseEntity<String> retirar(@PathVariable Long productoId, @RequestParam BigDecimal monto) {
         try {
-            productoService.retirar(productoId, monto);
+            iProductoService.retirar(productoId, monto);
             return new ResponseEntity<>("Retiro realizado con éxito", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Producto no encontrado o monto inválido", HttpStatus.NOT_FOUND);
@@ -68,7 +69,7 @@ public class ProductosController {
     @PostMapping("/transferir")
     public ResponseEntity<String> transferir(@RequestParam Long origenProductoId, @RequestParam Long destinoProductoId, @RequestParam BigDecimal monto) {
         try {
-            productoService.transferir(origenProductoId, destinoProductoId, monto);
+            iProductoService.transferir(origenProductoId, destinoProductoId, monto);
             return new ResponseEntity<>("Transferencia realizada con éxito", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Productos no encontrados o monto inválido", HttpStatus.NOT_FOUND);
@@ -80,7 +81,7 @@ public class ProductosController {
     @PostMapping("/cancelar-cuenta/{productoId}")
     public ResponseEntity<String> cancelarCuenta(@PathVariable Long productoId) {
         try {
-            productoService.cancelarCuenta(productoId);
+            iProductoService.cancelarCuenta(productoId);
             return new ResponseEntity<>("Cuenta cancelada con éxito", HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity<>("Producto no encontrado", HttpStatus.NOT_FOUND);
