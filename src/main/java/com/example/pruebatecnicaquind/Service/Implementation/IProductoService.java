@@ -11,8 +11,6 @@ public interface IProductoService {
 
     void cancelarCuenta(Long productoId);
 
-    void realizarTransaccion(Long productoId, BigDecimal monto);
-
     void consignar(Long productoId, BigDecimal monto);
 
     void retirar(Long productoId, BigDecimal monto);

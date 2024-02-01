@@ -30,17 +30,17 @@ public class ProductosController {
         }
     }
 
-    @PostMapping("/transaccion/{productoId}")
-    public ResponseEntity<String> realizarTransaccion(@PathVariable Long productoId, @RequestParam BigDecimal monto) {
-        try {
-            iProductoService.realizarTransaccion(productoId, monto);
-            return new ResponseEntity<>("Transacción realizada con éxito", HttpStatus.OK);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity<>("Producto no encontrado o monto inválido", HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity<>("Error al realizar la transacción", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
+//    @PostMapping("/transaccion/{productoId}")
+//    public ResponseEntity<String> realizarTransaccion(@PathVariable Long productoId, @RequestParam BigDecimal monto) {
+//        try {
+//            iProductoService.realizarTransaccion(productoId, monto);
+//            return new ResponseEntity<>("Transacción realizada con éxito", HttpStatus.OK);
+//        } catch (IllegalArgumentException e) {
+//            return new ResponseEntity<>("Producto no encontrado o monto inválido", HttpStatus.NOT_FOUND);
+//        } catch (Exception e) {
+//            return new ResponseEntity<>("Error al realizar la transacción", HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
+//    }
 
     @PostMapping("/consignar/{productoId}")
     public ResponseEntity<String> consignar(@PathVariable Long productoId, @RequestParam BigDecimal monto) {

@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
 
 @Service
 public class ProductoService implements IProductoService {
@@ -33,14 +32,6 @@ public class ProductoService implements IProductoService {
     @Override
     public void cancelarCuenta(Long productoId) {
 
-    }
-
-    @Override
-    public void realizarTransaccion(Long productoId, BigDecimal monto) {
-        ProductoEntity productoEntity = productoRepository.findById(productoId)
-                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con ID: " + productoId));
-        productoEntity.realizarTransaccion(monto);
-        productoRepository.save(productoEntity);
     }
 
     @Transactional
@@ -90,6 +81,7 @@ public class ProductoService implements IProductoService {
         productoRepository.save(origen);
         productoRepository.save(destino);
     }
+
 
 
 

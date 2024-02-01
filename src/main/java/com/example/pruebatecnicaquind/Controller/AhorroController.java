@@ -24,24 +24,8 @@ public class AhorroController {
 
     // Endpoints para Ahorro
 
-    /*
     @PostMapping("/crear/{clienteId}")
-    public ResponseEntity<CuentaAhorroEntity> crearCuentaAhorro(@PathVariable Long clienteId, @RequestBody CuentaAhorroDto cuentaAhorroDto) {
-        try {
-            ClienteEntity clienteEntity = clienteService.getClienteById(clienteId);
-            CuentaAhorroEntity cuentaAhorroEntity = iCuentaAhorroService.crearCuentaAhorro(clienteEntity,cuentaAhorroDto);
-            return new ResponseEntity<>(cuentaAhorroEntity, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            return new ResponseEntity("Cliente con ID no encontrado", HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity("Error al crear la cuenta de ahorro", HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-    }
-
-     */
-
-    @PostMapping("/crear/{clienteId}")
-    public ResponseEntity<Object> crearCuentaAhorroOso(@PathVariable Long clienteId, @RequestBody CuentaAhorroDto cuentaAhorroDto) {
+    public ResponseEntity<Object> crearCuentaAhorro(@PathVariable Long clienteId, @RequestBody CuentaAhorroDto cuentaAhorroDto) {
         try {
             ClienteEntity clienteEntity = clienteService.getClienteById(clienteId);
             Object cuentaAhorroEntity = iCuentaAhorroService.crearCuentaAhorro(clienteEntity,cuentaAhorroDto);

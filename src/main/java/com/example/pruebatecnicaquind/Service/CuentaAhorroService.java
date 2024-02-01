@@ -122,7 +122,7 @@ public class CuentaAhorroService implements ICuentaAhorroService {
         CuentaAhorroEntity destino = cuentaAhorroRepository.findById(destinoId)
                 .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente de destino no encontrada con ID: " + destinoId));
 
-        this.consignar(monto);
+    //    this.consignar(monto);
     }
 
 

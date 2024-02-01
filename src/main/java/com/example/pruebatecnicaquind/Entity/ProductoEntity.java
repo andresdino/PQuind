@@ -2,19 +2,20 @@ package com.example.pruebatecnicaquind.Entity;
 
 import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Getter
-@Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
-public abstract class ProductoEntity {
+@AllArgsConstructor
+public  abstract  class ProductoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -45,7 +46,5 @@ public abstract class ProductoEntity {
 
     private boolean activa;
 
-    public abstract void realizarTransaccion(BigDecimal monto);
 
 }
-

@@ -1,29 +1,36 @@
 package com.example.pruebatecnicaquind.Entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.PrimaryKeyJoinColumn;
+import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 
 @Entity
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @PrimaryKeyJoinColumn(name = "cuenta_corriente_id")
+@DiscriminatorValue("CUENTA_CORRIENTE")
 public class CuentaCorrienteEntity extends ProductoEntity {
 
-    @Override
-    public void setNumeroCuenta(String numeroCuenta) {
-        if (numeroCuenta.startsWith("33") && numeroCuenta.length() == 10) {
-            super.setNumeroCuenta(numeroCuenta);
-        } else {
-            throw new IllegalArgumentException("El número de cuenta corriente debe empezar con '33' y tener una longitud de 10 dígitos.");
-        }
-    }
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
+    @Column(nullable = false)
+    private String tipoCuenta;
 
-    @Override
-    public void realizarTransaccion(BigDecimal monto) {
-        consignar(monto);
-    }
+    @Column(unique = true, nullable = false)
+    private String numeroCuenta;
 
+    @Enumerated(EnumType.STRING)
+    private EstadoCuenta estado;
 
+    @Column(nullable = false)
+    private BigDecimal saldo;
 
+    private boolean exentaGMF;
 }
