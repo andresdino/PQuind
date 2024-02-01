@@ -1,6 +1,6 @@
 package com.example.pruebatecnicaquind.Entity.Dto;
 
-import com.example.pruebatecnicaquind.Entity.Cuentas.EstadoCuenta;
+import com.example.pruebatecnicaquind.Config.EstadoCuenta;
 import com.example.pruebatecnicaquind.Entity.Producto;
 import lombok.Data;
 import lombok.NoArgsConstructor;

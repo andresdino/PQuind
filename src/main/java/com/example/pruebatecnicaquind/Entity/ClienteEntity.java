@@ -1,6 +1,6 @@
 package com.example.pruebatecnicaquind.Entity;
 
-import com.example.pruebatecnicaquind.Entity.Dto.ClienteDTO;
+import com.example.pruebatecnicaquind.Dto.ClienteDTO;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
@@ -49,7 +49,7 @@ public class Cliente {
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     private List<Producto> productos;
 
-
+//MAPPER
     public static Cliente fromClienteDTO(ClienteDTO clienteDTO) {
         Cliente cliente = new Cliente();
         cliente.setId(clienteDTO.getId());
