@@ -6,24 +6,23 @@ import lombok.*;
 
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
+@Builder
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductoEntity {
+public class ProductoEntity extends Auditoria{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /*
-    @Column(name = "tipo_cuenta")
-    private String tipoCuenta;
-
-     */
+    @OneToMany(mappedBy = "productoEntity", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<CuentaEntity> cuenta;
 
     @Column(name = "numero_cuenta",unique = true, nullable = false)
     private String numeroCuenta;
@@ -41,5 +40,6 @@ public class ProductoEntity {
     @ManyToOne
     @JoinColumn(name = "cliente_id", nullable = false)
     private ClienteEntity clienteEntity;
+
 
 }
