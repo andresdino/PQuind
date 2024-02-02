@@ -9,7 +9,10 @@ public class MessageAplication {
     public static String CLIENTNOTFOUND = "No se encontro el cliente a eliminar";
     public static String ACCOUNTCANNOTCANCELLED  = "No se puede cancelar la cuenta";
     public static String ACCOUNTCANCELLED  = "Cuenta Cancelada";
+    public static String ACCOUNTCREATED = "Cuenta Creada";
     public static String CANNOTCREATEDIFFERENTACCOUNT  = "No se puede crear la cuenta";
     public static String UPDATEACCOUNTSTATUSCORRECTLY = "Se actualizo el estado de la cuenta correctamente";
     public static String AMOUNTAPPROPRIATIONMUSTBEPOSITIVE = "El monto de consignación debe ser positivo.";
+    public static String INSUFFICIENTBALANCE = "Saldo insuficiente para realizar el retiro.";
+    public static String CANNOTMINOR = "No puede ser menor de edad.";
 }
