@@ -29,11 +29,11 @@ public class ProductoServiceImpl implements IProductoService {
         requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);
         String numeroCuenta;
         if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.AHORROS.name())){
-            numeroCuenta = generarNumeroCuentaAleatorio("53");
+            numeroCuenta = crearCuenta.generarNumeroCuentaAleatorio("53");
             requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
             return  crearCuenta.crearCuentaAhorro(requestCuentaClienteDto);
         } else if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.CORRIENTE.name())) {
-            numeroCuenta = generarNumeroCuentaAleatorio("33");
+            numeroCuenta = crearCuenta.generarNumeroCuentaAleatorio("33");
             requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
             return crearCuenta.crearCuentaCorriente(requestCuentaClienteDto);
         } else{
@@ -111,11 +111,11 @@ public class ProductoServiceImpl implements IProductoService {
     }
 
 
-    public static String generarNumeroCuentaAleatorio(String prefijo) {
-        Random random = new Random();
-        int numeroAleatorio = 10000000 + random.nextInt(90000000);
-        return prefijo + numeroAleatorio;
-    }
+//    public static String generarNumeroCuentaAleatorio(String prefijo) {
+//        Random random = new Random();
+//        int numeroAleatorio = 10000000 + random.nextInt(90000000);
+//        return prefijo + numeroAleatorio;
+//    }
 
 
 }
