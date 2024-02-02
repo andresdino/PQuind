@@ -117,30 +117,5 @@ public class ProductoServiceImpl implements IProductoService {
         return prefijo + numeroAleatorio;
     }
 
-//    public String generarNumeroUnico() {
-//        Random random = new Random();
-//        String numeroGenerado;
-//
-//        do {
-//            // Generar un número aleatorio
-//            numeroGenerado = String.valueOf(random.nextInt(10000)); // Ajusta el rango según tus necesidades
-//
-//            // Verificar si el número ya existe en la base de datos
-//        } while (productoRepository.findByNumeroCuenta(numeroGenerado));
-//
-//        return numeroGenerado;
-//    }
-//
-//    private static final AtomicLong contador = new AtomicLong(3);
-
-
-//    public String estadoCuenta() {
-//        long siguienteNumero = contador.getAndIncrement();
-//
-//        // Formatear como "53" seguido de 8 dígitos
-//        String numeroCuenta = String.format("53%08d");
-//        return numeroCuenta;
-//    }
-
 
 }

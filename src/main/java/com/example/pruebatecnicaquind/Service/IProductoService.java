@@ -13,5 +13,5 @@ public interface IProductoService {
     Object cancelarCuenta(EditarEstadoCuentaDto requestCuentaClienteDto);
     Object consignarDinero(String numeroCuenta, BigDecimal monto);
     Object retirarDinero(String numeroCuenta, BigDecimal monto);
-    void tranferirDinero(String origenCuentaAhorronumeroCuenta, String destinoCuentaAhorronumeroCuenta, BigDecimal monto);
+    void tranferirDinero(String origenCuenta, String destinoCuenta, BigDecimal monto);
 }
