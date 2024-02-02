@@ -1,0 +1,14 @@
+
+P
+java:S1068	".Remove this unused "tipoCuenta" private field.(ÁÕ¡Ãıÿÿÿÿ8™Çú¹Ö1
+R
+java:S1068
+"0Remove this unused "numeroCuenta" private field.(Ğòîğûÿÿÿÿ8™Çú¹Ö1
+L
+java:S1068"*Remove this unused "estado" private field.(²ö£’üÿÿÿÿ8šÇú¹Ö1
+K
+java:S1068")Remove this unused "saldo" private field.(ÅŞÿøúÿÿÿÿ8šÇú¹Ö1
+J
+java:S1068"-Remove this unused "exentaGMF" private field.(ğÎì»8šÇú¹Ö1
+J
+java:S1068"-Remove this unused "clienteId" private field.(¹†»ë8›Çú¹Ö1
