@@ -1,6 +1,5 @@
 package com.example.pruebatecnicaquind.Entity;
 
-import com.example.pruebatecnicaquind.Enum.TipoCuenta;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
