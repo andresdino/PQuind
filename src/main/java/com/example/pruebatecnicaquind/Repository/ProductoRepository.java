@@ -12,5 +12,6 @@ public interface ProductoRepository extends JpaRepository<ProductoEntity, Long> 
 
     Optional<ProductoEntity> findProductoEntityByNumeroCuenta(String numeroCuenta);
     Boolean findByNumeroCuenta(String numero);
+    Boolean existsByNumeroCuenta(String numero);
 
 }
