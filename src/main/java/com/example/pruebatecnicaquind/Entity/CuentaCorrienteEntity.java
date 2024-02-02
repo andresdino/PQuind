@@ -2,19 +2,18 @@ package com.example.pruebatecnicaquind.Entity;
 
 import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
 @Entity
+@Getter
+@Setter
+@Table(name = "cuenta_corriente")
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@PrimaryKeyJoinColumn(name = "cuenta_corriente_id")
-@DiscriminatorValue("CUENTA_CORRIENTE")
-public class CuentaCorrienteEntity extends ProductoEntity {
+public class CuentaCorrienteEntity extends Auditoria{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

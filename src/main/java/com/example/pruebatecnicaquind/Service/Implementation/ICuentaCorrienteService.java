@@ -19,6 +19,6 @@ public interface ICuentaCorrienteService {
 
     void retirar(String cuentaCorrienteId, BigDecimal monto);
 
-    void transferir(String cuentaCorrienteId, Long destinoId, BigDecimal monto);
+    void transferir(String cuentaCorrientenumeroCuenta, String destinoIdnumeroCuenta, BigDecimal monto);
 
 }

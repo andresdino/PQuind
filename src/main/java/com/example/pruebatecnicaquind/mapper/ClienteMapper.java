@@ -10,10 +10,17 @@ public class ClienteMapper {
         return ClienteEntity
                 .builder()
                 .id(clienteDTO.getId())
+                .nombre(clienteDTO.getNombre())
+                .tipoIdentificacion(clienteDTO.getTipoIdentificacion())
+                .numeroIdentificacion(clienteDTO.getNumeroIdentificacion())
+                .apellido(clienteDTO.getApellido())
+                .email(clienteDTO.getEmail())
+                .fechaNacimiento(clienteDTO.getFechaNacimiento())
                 .build();
     }
 
 
+    /*
     public static ClienteDTO entityToClienteDto(ClienteEntity clienteEntity) {
         return new ClienteDTO(
                 clienteEntity.getId(),
@@ -27,4 +34,6 @@ public class ClienteMapper {
                 clienteEntity.getFechaModificacion()
         );
     }
+
+     */
 }

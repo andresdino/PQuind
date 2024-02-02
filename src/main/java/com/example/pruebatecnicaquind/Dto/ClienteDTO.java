@@ -1,7 +1,9 @@
 package com.example.pruebatecnicaquind.Dto;
 
+import com.example.pruebatecnicaquind.Entity.Auditoria;
 import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
@@ -10,9 +12,10 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ClienteDTO implements Serializable {
+public class ClienteDTO extends Auditoria implements Serializable {
     Long id;
     String tipoIdentificacion;
     Long numeroIdentificacion;
@@ -22,14 +25,12 @@ public class ClienteDTO implements Serializable {
     String apellido;
     String email;
     String fechaNacimiento;
-    LocalDateTime fechaCreacion;
-    LocalDateTime fechaModificacion;
     private ProductoEntity productos;
 
 
     public ClienteDTO(Long id, String tipoIdentificacion, Long numeroIdentificacion,
-                              String nombre, String apellido, String email, String fechaNacimiento,
-                              LocalDateTime fechaCreacion, LocalDateTime fechaModificacion) {
+                              String nombre, String apellido, String email, String fechaNacimiento
+                              ) {
         this.id = id;
         this.tipoIdentificacion = tipoIdentificacion;
         this.numeroIdentificacion = numeroIdentificacion;
@@ -37,8 +38,6 @@ public class ClienteDTO implements Serializable {
         this.apellido = apellido;
         this.email = email;
         this.fechaNacimiento = fechaNacimiento;
-        this.fechaCreacion = fechaCreacion;
-        this.fechaModificacion = fechaModificacion;
     }
 
 

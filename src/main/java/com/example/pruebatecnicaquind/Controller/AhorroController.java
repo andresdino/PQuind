@@ -11,6 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
+import java.util.concurrent.atomic.AtomicLong;
 
 @RestController
 @RequestMapping("/ahorro")
@@ -37,11 +39,21 @@ public class AhorroController {
         }
     }
 
-    @PostMapping("/consignar/{cuentaAhorroId}")
-    public ResponseEntity<Void> consignar(@PathVariable Long cuentaAhorroId, @RequestParam BigDecimal monto) {
+    @PatchMapping("/updtadeCuentaAhorro")
+    public Object updateEstadoCuenta(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        return iCuentaAhorroService.updateEstadoCuenta(editarEstadoCuentaDto);
+    }
+
+    @PatchMapping("/cancelarCuentaAhorro")
+    public Object cancelarCuentaAhorro(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        return iCuentaAhorroService.cancelarCuentaAhorro(editarEstadoCuentaDto);
+    }
+
+    @PostMapping("/consignar/{numeroCuenta}")
+    public ResponseEntity<Object> consignar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
         try {
-            iCuentaAhorroService.consignar(cuentaAhorroId, monto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            iCuentaAhorroService.consignar(numeroCuenta, monto);
+            return new ResponseEntity<>("Se cosnigno",HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cuenta de ahorro con ID no encontrada", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
@@ -49,10 +61,10 @@ public class AhorroController {
         }
     }
 
-    @PostMapping("/retirar/{cuentaAhorroId}")
-    public ResponseEntity<Void> retirar(@PathVariable Long cuentaAhorroId, @RequestParam BigDecimal monto) {
+    @PostMapping("/retirar/{numeroCuenta}")
+    public ResponseEntity<Void> retirar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
         try {
-            iCuentaAhorroService.retirar(cuentaAhorroId, monto);
+            iCuentaAhorroService.retirar(numeroCuenta, monto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cuenta de ahorro con ID no encontrada", HttpStatus.NOT_FOUND);
@@ -62,9 +74,9 @@ public class AhorroController {
     }
 
     @PostMapping("/transferir")
-    public ResponseEntity<Void> transferir(@RequestParam Long origenCuentaAhorroId, @RequestParam Long destinoCuentaAhorroId, @RequestParam BigDecimal monto) {
+    public ResponseEntity<Void> transferir(@RequestParam String origenCuentaAhorronumeroCuenta, @RequestParam String destinoCuentaAhorronumeroCuenta, @RequestParam BigDecimal monto) {
         try {
-            iCuentaAhorroService.transferir(origenCuentaAhorroId, destinoCuentaAhorroId, monto);
+            iCuentaAhorroService.transferir(origenCuentaAhorronumeroCuenta, destinoCuentaAhorronumeroCuenta, monto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cuenta de ahorro con ID no encontrada", HttpStatus.NOT_FOUND);
@@ -73,13 +85,17 @@ public class AhorroController {
         }
     }
 
-    @PatchMapping("/cancelarCuentaAhorro")
-    public Object updateEstadoCuenta(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
-        return iCuentaAhorroService.updateEstadoCuenta(editarEstadoCuentaDto);
-    }
 
-    @PatchMapping("/cancelarCuentaAhorro")
-    public Object cancelarCuentaAhorro(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
-        return iCuentaAhorroService.cancelarCuentaAhorro(editarEstadoCuentaDto);
+
+
+
+    private static final AtomicLong contador = new AtomicLong(1);
+    @GetMapping("/numero")
+    public String zEstadoCuenta() {
+        long siguienteNumero = contador.getAndIncrement();
+
+        // Formatear como "53" seguido de 8 dígitos
+        String numeroCuenta = String.format("53%08d", siguienteNumero);
+        return numeroCuenta;
     }
 }

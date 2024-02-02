@@ -12,10 +12,10 @@ public interface ICuentaAhorroService {
     Object updateEstadoCuenta(EditarEstadoCuentaDto editarEstadoCuentaDto);
     Object cancelarCuentaAhorro(EditarEstadoCuentaDto editarEstadoCuentaDto);
 
-    void consignar(Long cuentaAhorroId, BigDecimal monto);
+    void consignar(String cuentaAhorroId, BigDecimal monto);
 
-    void retirar(Long cuentaAhorroId, BigDecimal monto);
+    void retirar(String numeroCuenta, BigDecimal monto);
 
-    void transferir(Long cuentaAhorroId, Long destinoId, BigDecimal monto);
+    void transferir(String cuentaAhorronumeroCuenta, String destinoIdnumeroCuenta, BigDecimal monto);
 
 }

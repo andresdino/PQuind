@@ -38,7 +38,7 @@ public class CorrienteController {
         }
     }
 
-    @PatchMapping("/cancelarCuentaCorriente")
+    @PatchMapping("/updateCuentaCorriente")
     public Object updateEstadoCuenta(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
         return iCuentaCorrienteService.updateEstadoCuenta(editarEstadoCuentaDto);
     }
@@ -48,10 +48,10 @@ public class CorrienteController {
         return iCuentaCorrienteService.cancelarCuentaCorriente(editarEstadoCuentaDto);
     }
 
-    @PostMapping("/consignar/{cuentaCorrienteId}")
-    public ResponseEntity<Void> consignar(@PathVariable String cuentaCorrienteId, @RequestParam BigDecimal monto) {
+    @PostMapping("/consignar/{numeroCuenta}")
+    public ResponseEntity<Void> consignar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
         try {
-            iCuentaCorrienteService.consignar(cuentaCorrienteId, monto);
+            iCuentaCorrienteService.consignar(numeroCuenta, monto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cuenta corriente con ID no encontrada", HttpStatus.NOT_FOUND);
@@ -60,10 +60,10 @@ public class CorrienteController {
         }
     }
 
-    @PostMapping("/retirar/{cuentaCorrienteId}")
-    public ResponseEntity<Void> retirar(@PathVariable String cuentaCorrienteId, @RequestParam BigDecimal monto) {
+    @PostMapping("/retirar/{numeroCuenta}")
+    public ResponseEntity<Void> retirar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
         try {
-            iCuentaCorrienteService.retirar(cuentaCorrienteId, monto);
+            iCuentaCorrienteService.retirar(numeroCuenta, monto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cuenta corriente con ID no encontrada", HttpStatus.NOT_FOUND);
@@ -73,9 +73,9 @@ public class CorrienteController {
     }
 
     @PostMapping("/transferir")
-    public ResponseEntity<Void> transferir(@RequestParam String origenCuentaCorrienteId, @RequestParam Long destinoCuentaCorrienteId, @RequestParam BigDecimal monto) {
+    public ResponseEntity<Void> transferir(@RequestParam String origenCuentaCorrientenumeroCuenta, @RequestParam String destinoCuentaCorrientenumeroCuenta, @RequestParam BigDecimal monto) {
         try {
-            iCuentaCorrienteService.transferir(origenCuentaCorrienteId, destinoCuentaCorrienteId, monto);
+            iCuentaCorrienteService.transferir(origenCuentaCorrientenumeroCuenta, destinoCuentaCorrientenumeroCuenta, monto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
             return new ResponseEntity("Cuenta corriente con ID no encontrada", HttpStatus.NOT_FOUND);

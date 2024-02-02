@@ -25,8 +25,8 @@ public class ProductoService implements IProductoService {
     public ProductoEntity createProducto(ProductoDTO productoDTO) {
         productoDTO.setFechaModificacion(LocalDateTime.now());
         productoDTO.setEstado(EstadoCuenta.ACTIVA);
-        ProductoEntity saveInformation = ProductoMapper.dtoToProductoEntity(productoDTO);
-        return productoRepository.save(saveInformation);
+        //ProductoEntity saveInformation = ProductoMapper.dtoToProductoEntity(productoDTO);
+        return null;
     }
 
     @Override

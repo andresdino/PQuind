@@ -5,6 +5,7 @@ import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 
 public class ProductoMapper {
 
+    /*
     public static ProductoEntity dtoToProductoEntity(ProductoDTO productoDTO) {
         return ProductoEntity
                 .builder()
@@ -15,4 +16,6 @@ public class ProductoMapper {
     public static ProductoDTO entityToProductoDto(ProductoEntity productoEntity) {
         return ProductoDTO.builder().build();
     }
+
+     */
 }

@@ -2,9 +2,7 @@ package com.example.pruebatecnicaquind.Entity;
 
 import com.example.pruebatecnicaquind.Enums.EstadoCuenta;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 
 import java.math.BigDecimal;
@@ -12,10 +10,11 @@ import java.time.LocalDateTime;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-@Builder
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public  abstract  class ProductoEntity {
+public  class ProductoEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

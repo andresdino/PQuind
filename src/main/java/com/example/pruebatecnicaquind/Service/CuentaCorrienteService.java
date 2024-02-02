@@ -28,8 +28,6 @@ public class CuentaCorrienteService implements ICuentaCorrienteService {
 
     @Autowired
     private CuentaCorrienteRepository cuentaCorrienteRepository;
-    @Autowired
-    private CuentaAhorroRepository cuentaAhorroRepository;
 
     @Override
     public CuentaCorrienteEntity crearCuentaCorriente(ClienteEntity clienteEntity, CuentaCorrienteDto cuentaCorrienteDto) {
@@ -40,7 +38,7 @@ public class CuentaCorrienteService implements ICuentaCorrienteService {
         cuentaCorrienteDto.setNumeroCuenta(numeroCuenta);
 
         CuentaCorrienteEntity cuentaCorrienteEntity = CuentaCorrienteMapper.dtoToCuentaCorrienteEntity(cuentaCorrienteDto);
-        cuentaCorrienteEntity.setClienteEntity(clienteEntity);
+        //cuentaCorrienteEntity.setClienteEntity(clienteEntity);
 
         CuentaCorrienteEntity saveInformation = CuentaCorrienteMapper.dtoToCuentaCorrienteEntity(cuentaCorrienteDto);
 
@@ -74,14 +72,14 @@ public class CuentaCorrienteService implements ICuentaCorrienteService {
     }
 
     @Override
-    public void consignar(String cuentaCorrienteId, BigDecimal monto) {
+    public void consignar(String numeroCuenta, BigDecimal monto) {
 
         if (monto.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El monto de consignación debe ser positivo.");
         }
 
-        CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(cuentaCorrienteId)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaCorrienteId));
+        CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(numeroCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + numeroCuenta));
 
         cuentaCorrienteEntity.setSaldo(cuentaCorrienteEntity.getSaldo().add(monto));
         cuentaCorrienteEntity.setFechaModificacion(LocalDateTime.now());
@@ -108,17 +106,17 @@ public class CuentaCorrienteService implements ICuentaCorrienteService {
 
     @Override
     @Transactional
-    public void transferir(String cuentaCorrienteId, Long destinoId, BigDecimal monto) {
-        CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(cuentaCorrienteId)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaCorrienteId));
+    public void transferir(String cuentaCorrientenumeroCuenta, String destinonumeroCuenta, BigDecimal monto) {
+        CuentaCorrienteEntity cuentaCorrienteEntity = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(cuentaCorrientenumeroCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaCorrientenumeroCuenta));
 
-        // Lógica de transferencia
-        retirar(cuentaCorrienteId, monto);
+        retirar(cuentaCorrientenumeroCuenta, monto);
 
-        CuentaCorrienteEntity destino = cuentaCorrienteRepository.findById(destinoId)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente de destino no encontrada con ID: " + destinoId));
+        CuentaCorrienteEntity destino = cuentaCorrienteRepository.findCuentaCorrienteEntityByNumeroCuenta(destinonumeroCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente de destino no encontrada con ID: " + destinonumeroCuenta));
 
-    //    this.consignar(monto);
+        consignar(destino.getNumeroCuenta(), monto);
+
     }
 
 

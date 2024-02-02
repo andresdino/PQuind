@@ -41,7 +41,7 @@ public class CuentaAhorroService implements ICuentaAhorroService {
         cuentaAhorroDto.setNumeroCuenta(numeroCuenta);
 
         CuentaAhorroEntity cuentaAhorroEntity = CuentaAhorroMapper.dtoToCuentaAhorroEntity(cuentaAhorroDto);
-        cuentaAhorroEntity.setClienteEntity(clienteEntity);
+        //cuentaAhorroEntity.setClienteEntity(clienteEntity);
 
         CuentaAhorroEntity saveInformation = CuentaAhorroMapper.dtoToCuentaAhorroEntity(cuentaAhorroDto);
 
@@ -69,6 +69,7 @@ public class CuentaAhorroService implements ICuentaAhorroService {
                 cuentaAhorroEntity.get().setEstado(EstadoCuenta.CANCELADA);
                 cuentaAhorroEntity.get().setFechaModificacion(LocalDateTime.now());
                 cuentaAhorroRepository.save(cuentaAhorroEntity.get());
+                return MessageAplication.ACCOUNTCANCELLED;
             }
             return MessageAplication.ACCOUNTCANNOTCANCELLED;
         }
@@ -77,14 +78,14 @@ public class CuentaAhorroService implements ICuentaAhorroService {
 
     @Override
     @Transactional
-    public void consignar(Long cuentaAhorroId, BigDecimal monto) {
+    public void consignar(String numeroCuenta, BigDecimal monto) {
 
         if (monto.compareTo(BigDecimal.ZERO) <= 0) {
             throw new IllegalArgumentException("El monto de consignación debe ser positivo.");
         }
 
-        CuentaAhorroEntity cuentaAhorroEntity = cuentaAhorroRepository.findById(cuentaAhorroId)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta de ahorro no encontrada con ID: " + cuentaAhorroId));
+        CuentaAhorroEntity cuentaAhorroEntity = cuentaAhorroRepository.findCuentaAhorroEntityByNumeroCuenta(numeroCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta de ahorro no encontrada con ID: " + numeroCuenta));
 
         // Lógica de consignación
         cuentaAhorroEntity.setSaldo(cuentaAhorroEntity.getSaldo().add(monto));
@@ -95,9 +96,9 @@ public class CuentaAhorroService implements ICuentaAhorroService {
 
     @Override
     @Transactional
-    public void retirar(Long cuentaAhorroId, BigDecimal monto) {
-        CuentaAhorroEntity cuentaAhorroEntity = cuentaAhorroRepository.findById(cuentaAhorroId)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaAhorroId));
+    public void retirar(String numeroCuenta, BigDecimal monto) {
+        CuentaAhorroEntity cuentaAhorroEntity = cuentaAhorroRepository.findCuentaAhorroEntityByNumeroCuenta(numeroCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + numeroCuenta));
 
         // Lógica de retiro
         if (cuentaAhorroEntity.getSaldo().compareTo(monto) >= 0) {
@@ -112,17 +113,17 @@ public class CuentaAhorroService implements ICuentaAhorroService {
 
     @Override
     @Transactional
-    public void transferir(Long cuentaAhorroId, Long destinoId, BigDecimal monto) {
-        CuentaAhorroEntity cuentaAhorroEntity = cuentaAhorroRepository.findById(cuentaAhorroId)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaAhorroId));
+    public void transferir(String cuentaAhorronumeroCuenta, String destinonumeroCuenta, BigDecimal monto) {
+        CuentaAhorroEntity cuentaAhorroEntity = cuentaAhorroRepository.findCuentaAhorroEntityByNumeroCuenta(cuentaAhorronumeroCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente no encontrada con ID: " + cuentaAhorronumeroCuenta));
 
-        // Lógica de transferencia
-        retirar(cuentaAhorroId, monto);
+        retirar(cuentaAhorronumeroCuenta, monto);
 
-        CuentaAhorroEntity destino = cuentaAhorroRepository.findById(destinoId)
-                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente de destino no encontrada con ID: " + destinoId));
+        CuentaAhorroEntity destino = cuentaAhorroRepository.findCuentaAhorroEntityByNumeroCuenta(destinonumeroCuenta)
+                .orElseThrow(() -> new IllegalArgumentException("Cuenta corriente de destino no encontrada con ID: " + destinonumeroCuenta));
 
-    //    this.consignar(monto);
+        consignar(destino.getNumeroCuenta(), monto);
+
     }
 
 
