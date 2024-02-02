@@ -23,7 +23,7 @@ public class ProductoServiceImpl implements IProductoService {
     private ProductoRepository productoRepository;
 
     @Autowired
-    private CuentaAhorroImpl cuentaAhorro;
+    private CuentaImpl crearCuenta;
     @Override
     public Object createCuenta(RequestCuentaClienteDto requestCuentaClienteDto) {
         requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);
@@ -31,11 +31,11 @@ public class ProductoServiceImpl implements IProductoService {
         if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.AHORROS.name())){
             numeroCuenta = generarNumeroCuentaAleatorio("53");
             requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
-            return  cuentaAhorro.crearCuentaAhorro(requestCuentaClienteDto);
+            return  crearCuenta.crearCuentaAhorro(requestCuentaClienteDto);
         } else if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.CORRIENTE.name())) {
             numeroCuenta = generarNumeroCuentaAleatorio("33");
             requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
-            return null;
+            return crearCuenta.crearCuentaCorriente(requestCuentaClienteDto);
         } else{
             return MessageAplication.CANNOTCREATEDIFFERENTACCOUNT;
         }
