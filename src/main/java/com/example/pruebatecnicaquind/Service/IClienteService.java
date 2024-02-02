@@ -13,8 +13,8 @@ public interface IClienteService {
 
     Object createCliente(ClienteDto clienteDTO);
 
-    Object updateCliente(Long id, ClienteDto clienteDTO);
+    Object updateCliente(String numeroIdentificacion, ClienteDto clienteDTO);
 
-    void deleteCliente(Long id);
+    String deleteCliente(String numeroIdentificacion);
 
 }

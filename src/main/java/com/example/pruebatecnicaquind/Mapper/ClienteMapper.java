@@ -5,16 +5,16 @@ import com.example.pruebatecnicaquind.Entity.ClienteEntity;
 
 public class ClienteMapper {
     public static ClienteEntity dtoToClienteEntity(ClienteDto clienteDTO) {
+        ClienteEntity clienteEntity = new ClienteEntity();
+        clienteEntity.setTipoIdentificacion(clienteDTO.getTipoIdentificacion());
+        clienteEntity.setNumeroIdentificacion(clienteDTO.getNumeroIdentificacion());
+        clienteEntity.setNombre(clienteDTO.getNombre());
+        clienteEntity.setApellido(clienteDTO.getApellido());
+        clienteEntity.setEmail(clienteDTO.getEmail());
+        clienteEntity.setFechaNacimiento(clienteDTO.getFechaNacimiento());
+        clienteEntity.setFechaCreacion(clienteDTO.getFechaCreacion());
+        clienteEntity.setFechaModificacion(clienteDTO.getFechaModificacion());
 
-        return ClienteEntity
-                .builder()
-                .nombre(clienteDTO.getNombre())
-                .tipoIdentificacion(clienteDTO.getTipoIdentificacion())
-                .numeroIdentificacion(clienteDTO.getNumeroIdentificacion())
-                .apellido(clienteDTO.getApellido())
-                .email(clienteDTO.getEmail())
-                .fechaNacimiento(clienteDTO.getFechaNacimiento())
-                //.productoEntity(clienteDTO.getProductoDto())
-                .build();
+        return clienteEntity;
     }
 }
