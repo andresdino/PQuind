@@ -53,35 +53,35 @@ public class ProductoController {
     public ResponseEntity<Object> consignar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
         try {
             iProductoService.consignarDinero(numeroCuenta, monto);
-            return new ResponseEntity<>("Se cosnigno",HttpStatus.OK);
+            return new ResponseEntity<>("Se ha consigando el monto",HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity("Cuenta de ahorro con ID no encontrada", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Cuenta no encontrada", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
             return new ResponseEntity("Error al consignar en la cuenta de ahorro", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/retirar/{numeroCuenta}")
-    public ResponseEntity<Void> retirar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
+    public ResponseEntity<String> retirar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
         try {
             iProductoService.retirarDinero(numeroCuenta, monto);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>("Se ha retirado el monto",HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity("Cuenta de ahorro con ID no encontrada", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Cuenta no encontrada", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity("Error al retirar de la cuenta de ahorro", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error al retirar de la cuenta", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/transferir")
-    public ResponseEntity<Void> transferir(@RequestParam String origenCuentaAhorronumeroCuenta, @RequestParam String destinoCuentaAhorronumeroCuenta, @RequestParam BigDecimal monto) {
+    public ResponseEntity<Void> transferir(@RequestParam String origenCuenta, @RequestParam String destinoCuenta, @RequestParam BigDecimal monto) {
         try {
-            iProductoService.tranferirDinero(origenCuentaAhorronumeroCuenta, destinoCuentaAhorronumeroCuenta, monto);
+            iProductoService.tranferirDinero(origenCuenta, destinoCuenta, monto);
             return new ResponseEntity<>(HttpStatus.OK);
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity("Cuenta de ahorro con ID no encontrada", HttpStatus.NOT_FOUND);
+            return new ResponseEntity("Cuenta no encontrada", HttpStatus.NOT_FOUND);
         } catch (Exception e) {
-            return new ResponseEntity("Error al transferir en la cuenta de ahorro", HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity("Error al transferir en la cuenta", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
