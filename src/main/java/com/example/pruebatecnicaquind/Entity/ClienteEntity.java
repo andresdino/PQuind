@@ -54,5 +54,5 @@ public class ClienteEntity {
     private String fechaNacimiento;
 
     @OneToMany(mappedBy = "clienteEntity", cascade = CascadeType.ALL)
-    private List<ProductoEntity> productoEntities;
+    private List<ProductoEntity> productoEntity;
 }
