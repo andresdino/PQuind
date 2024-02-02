@@ -6,6 +6,7 @@ import com.example.pruebatecnicaquind.Entity.ClienteEntity;
 import com.example.pruebatecnicaquind.Entity.CuentaEntity;
 import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 import com.example.pruebatecnicaquind.Enum.EstadoCuenta;
+import com.example.pruebatecnicaquind.Enum.TipoCuenta;
 import com.example.pruebatecnicaquind.Mapper.ProductoMapper;
 import com.example.pruebatecnicaquind.Repository.CuentaRepository;
 import com.example.pruebatecnicaquind.Repository.ProductoRepository;
@@ -13,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Random;
 
 @Service
 public class CuentaAhorroImpl {
@@ -30,11 +33,10 @@ public class CuentaAhorroImpl {
         }
 
         requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);
-        String numeroCuenta;
 
-        numeroCuenta = String.format("53%08d",4);
-        requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
+        requestCuentaClienteDto.getProductoDto().setNumeroCuenta(generarNumeroCuentaAleatorio());
         requestCuentaClienteDto.getProductoDto().setEstado(EstadoCuenta.ACTIVA);
+        requestCuentaClienteDto.getProductoDto().setFechaCreacion(LocalDateTime.now());
 
         ProductoEntity producto = ProductoMapper.dtoToProductoEntity(requestCuentaClienteDto.getProductoDto());
         productoRepository.save(producto);
@@ -44,6 +46,15 @@ public class CuentaAhorroImpl {
         cuentaEntity.setProductoEntity(producto);
         cuentaRepository.save(cuentaEntity);
 
-        return "se guardo bien";
+        return MessageAplication.ACCOUNTCREATED;
+    }
+
+    public String generarNumeroCuentaAleatorio() {
+        // Generar un número aleatorio de 8 dígitos
+        Random random = new Random();
+        int numeroAleatorio = 10000000 + random.nextInt(90000000);
+
+        // Formatear el número de cuenta con el prefijo "53"
+        return "53" + numeroAleatorio;
     }
 }

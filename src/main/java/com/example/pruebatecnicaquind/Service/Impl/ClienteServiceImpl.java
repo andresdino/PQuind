@@ -1,19 +1,22 @@
 package com.example.pruebatecnicaquind.Service.Impl;
 
+import com.example.pruebatecnicaquind.Constans.MessageAplication;
 import com.example.pruebatecnicaquind.Dto.ClienteDto;
 import com.example.pruebatecnicaquind.Entity.ClienteEntity;
 import com.example.pruebatecnicaquind.Mapper.ClienteMapper;
 import com.example.pruebatecnicaquind.Repository.ClienteRepository;
 import com.example.pruebatecnicaquind.Service.IClienteService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.List;
 import java.util.Optional;
+
+/***
+ * Service containing the client's service logic
+ */
 
 @Service
 public class ClienteServiceImpl implements IClienteService{
@@ -22,20 +25,10 @@ public class ClienteServiceImpl implements IClienteService{
     private ClienteRepository clienteRepository;
 
     @Override
-    public List<ClienteEntity> getAllClientes() {
-        return null;
-    }
-
-    @Override
-    public ClienteEntity getClienteById(Long id) {
-        return null;
-    }
-
-    @Override
     public Object createCliente(ClienteDto clienteDTO) {
         Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());
         if (!edadValida){
-            return "No puede ser menor bpbo hpt";
+            return MessageAplication.CANNOTMINOR;
         }
 
         clienteDTO.setFechaCreacion(LocalDateTime.now());
@@ -50,7 +43,7 @@ public class ClienteServiceImpl implements IClienteService{
 
         Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());
         if (!edadValida){
-             return "No puede ser menor bpbo hpt";
+            return MessageAplication.CANNOTMINOR;
         }
 
         if (existingClienteEntity.isPresent()){
@@ -69,17 +62,17 @@ public class ClienteServiceImpl implements IClienteService{
 
     @Override
     public String deleteCliente(String numeroIdentificacion) {
-        ClienteEntity clienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion)
-                .orElseThrow(() -> new EntityNotFoundException("Cliente no encontrado con id: " + numeroIdentificacion));
+        Optional<ClienteEntity> clienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion);
+        if (clienteEntity.isPresent()){
 
-        /*
-        if (!clienteEntity.getProductoEntities().isEmpty()) {
-            throw new IllegalStateException(MessageAplication.DELETECLIENTERROR);
+            if (clienteEntity.get().getProductoEntity().isEmpty()) {
+                clienteRepository.deleteById(clienteEntity.get().getId());
+                return MessageAplication.DELETECLIENT;
+            }
+            return MessageAplication.DELETECLIENTERROR;
         }
 
-         */
-        clienteRepository.delete(clienteEntity);
-        return "Eliminado Exitosamente";
+        return MessageAplication.CLIENTNOTFOUND;
     }
 
     private Boolean validateEdadCliente(String fechaNacimiento) {

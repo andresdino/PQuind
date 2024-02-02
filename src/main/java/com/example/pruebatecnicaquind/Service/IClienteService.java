@@ -7,10 +7,6 @@ import java.util.List;
 
 public interface IClienteService {
 
-    List<ClienteEntity> getAllClientes();
-
-    public ClienteEntity getClienteById(Long id);
-
     Object createCliente(ClienteDto clienteDTO);
 
     Object updateCliente(String numeroIdentificacion, ClienteDto clienteDTO);

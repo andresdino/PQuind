@@ -6,7 +6,6 @@ import com.example.pruebatecnicaquind.Dto.RequestCuentaClienteDto;
 import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 import com.example.pruebatecnicaquind.Enum.EstadoCuenta;
 import com.example.pruebatecnicaquind.Enum.TipoCuenta;
-import com.example.pruebatecnicaquind.Repository.CuentaRepository;
 import com.example.pruebatecnicaquind.Repository.ProductoRepository;
 import com.example.pruebatecnicaquind.Service.IProductoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicLong;
 
 @Service
 public class ProductoServiceImpl implements IProductoService {
@@ -25,18 +23,17 @@ public class ProductoServiceImpl implements IProductoService {
     private ProductoRepository productoRepository;
 
     @Autowired
-    private CuentaRepository cuentaRepository;
-
-    @Autowired
     private CuentaAhorroImpl cuentaAhorro;
     @Override
     public Object createCuenta(RequestCuentaClienteDto requestCuentaClienteDto) {
         requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);
         String numeroCuenta;
-        if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.AHORROS)){
+        if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.AHORROS.name())){
+            numeroCuenta = generarNumeroCuentaAleatorio("53");
+            requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
             return  cuentaAhorro.crearCuentaAhorro(requestCuentaClienteDto);
-        } else if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.CORRIENTE)) {
-            numeroCuenta = String.format("33%08d");
+        } else if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.CORRIENTE.name())) {
+            numeroCuenta = generarNumeroCuentaAleatorio("33");
             requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
             return null;
         } else{
@@ -80,7 +77,7 @@ public class ProductoServiceImpl implements IProductoService {
 
         Optional<ProductoEntity> productoEntity = productoRepository.findProductoEntityByNumeroCuenta(numeroCuenta);
         if (productoEntity.isEmpty()){
-            return "Cuenta de ahorro no encontrada con ID:";
+            return MessageAplication.ACCOUNTNOTFOUND;
         }
 
         productoEntity.get().setSaldo(productoEntity.get().getSaldo().add(monto));
@@ -94,7 +91,7 @@ public class ProductoServiceImpl implements IProductoService {
         Optional<ProductoEntity> productoEntity = productoRepository.findProductoEntityByNumeroCuenta(numeroCuenta);
 
         if (productoEntity.isEmpty()){
-            return "Cuenta de ahorro no encontrada con ID:";
+            return MessageAplication.ACCOUNTNOTFOUND;
         }
         // Lógica de retiro
         if (productoEntity.get().getSaldo().compareTo(monto) >= 0) {
@@ -103,7 +100,7 @@ public class ProductoServiceImpl implements IProductoService {
 
             return productoRepository.save(productoEntity.get());
         } else {
-            throw new IllegalStateException("Saldo insuficiente para realizar el retiro.");
+            return MessageAplication.INSUFFICIENTBALANCE;
         }
     }
 
@@ -113,28 +110,37 @@ public class ProductoServiceImpl implements IProductoService {
         consignarDinero(destinoNumeroCuenta,monto);
     }
 
-    public String generarNumeroUnico() {
+
+    public static String generarNumeroCuentaAleatorio(String prefijo) {
         Random random = new Random();
-        String numeroGenerado;
-
-        do {
-            // Generar un número aleatorio
-            numeroGenerado = String.valueOf(random.nextInt(10000)); // Ajusta el rango según tus necesidades
-
-            // Verificar si el número ya existe en la base de datos
-        } while (productoRepository.findByNumeroCuenta(numeroGenerado));
-
-        return numeroGenerado;
+        int numeroAleatorio = 10000000 + random.nextInt(90000000);
+        return prefijo + numeroAleatorio;
     }
 
-    private static final AtomicLong contador = new AtomicLong(3);
-    public String estadoCuenta() {
-        long siguienteNumero = contador.getAndIncrement();
+//    public String generarNumeroUnico() {
+//        Random random = new Random();
+//        String numeroGenerado;
+//
+//        do {
+//            // Generar un número aleatorio
+//            numeroGenerado = String.valueOf(random.nextInt(10000)); // Ajusta el rango según tus necesidades
+//
+//            // Verificar si el número ya existe en la base de datos
+//        } while (productoRepository.findByNumeroCuenta(numeroGenerado));
+//
+//        return numeroGenerado;
+//    }
+//
+//    private static final AtomicLong contador = new AtomicLong(3);
 
-        // Formatear como "53" seguido de 8 dígitos
-        String numeroCuenta = String.format("53%08d");
-        return numeroCuenta;
-    }
+
+//    public String estadoCuenta() {
+//        long siguienteNumero = contador.getAndIncrement();
+//
+//        // Formatear como "53" seguido de 8 dígitos
+//        String numeroCuenta = String.format("53%08d");
+//        return numeroCuenta;
+//    }
 
 
 }
