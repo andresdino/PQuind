@@ -30,16 +30,25 @@ public class ProductoController {
         }
     }
 
-    @PatchMapping("/updtadeEstadoCuenta")
-    public Object updateEstadoCuenta(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
-        return iProductoService.updateEstadoCuenta(editarEstadoCuentaDto);
+    @PatchMapping("/updateEstadoCuenta")
+    public ResponseEntity<Object> updateEstadoCuenta(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        try {
+            Object resultado = iProductoService.updateEstadoCuenta(editarEstadoCuentaDto);
+            return new ResponseEntity<>(resultado, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al actualizar el estado de la cuenta", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
-    @PatchMapping("/cancelarCuentaAhorro")
-    public Object cancelarCuentaAhorro(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
-        return iProductoService.cancelarCuenta(editarEstadoCuentaDto);
+    @PatchMapping("/cancelarCuenta")
+    public ResponseEntity<Object> cancelarCuenta(@RequestBody EditarEstadoCuentaDto editarEstadoCuentaDto) {
+        try {
+            Object resultado = iProductoService.cancelarCuenta(editarEstadoCuentaDto);
+            return new ResponseEntity<>(resultado, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>("Error al cancelar la cuenta de ahorro", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-
     @PostMapping("/consignar/{numeroCuenta}")
     public ResponseEntity<Object> consignar(@PathVariable String numeroCuenta, @RequestParam BigDecimal monto) {
         try {
