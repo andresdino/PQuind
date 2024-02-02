@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClienteController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PruebaTecnicaQuind</a> &gt; <a href="index.source.html" class="el_package">com.example.pruebatecnicaquind.Controller</a> &gt; <span class="el_source">ClienteController.java</span></div><h1>ClienteController.java</h1><pre class="source lang-java linenums">package com.example.pruebatecnicaquind.Controller;
+
+import com.example.pruebatecnicaquind.Dto.ClienteDto;
+
+import com.example.pruebatecnicaquind.Entity.ClienteEntity;
+import com.example.pruebatecnicaquind.Service.IClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping(&quot;/apí/v1/cliente&quot;)
+<span class="nc" id="L14">public class ClienteController {</span>
+
+    @Autowired
+    private IClienteService iClienteService;
+
+    @PostMapping(&quot;/create&quot;)
+    public ResponseEntity&lt;ClienteDto&gt; createCliente(@RequestBody ClienteDto clienteDTO){
+        try {
+<span class="nc" id="L22">            Object nuevoClienteEntity = iClienteService.createCliente(clienteDTO);</span>
+<span class="nc" id="L23">            return new ResponseEntity(nuevoClienteEntity, HttpStatus.CREATED);</span>
+<span class="nc" id="L24">        } catch (Exception e) {</span>
+<span class="nc" id="L25">            return new ResponseEntity(&quot;Error al crear el cliente&quot;, HttpStatus.INTERNAL_SERVER_ERROR);</span>
+        }
+    }
+
+    @PatchMapping(&quot;/update/{numeroIdentificacion}&quot;)
+    public ResponseEntity&lt;ClienteEntity&gt; updateCliente(@PathVariable String numeroIdentificacion, @RequestBody ClienteDto clienteDTO) {
+        try {
+<span class="nc" id="L32">            Object clienteEntityActualizado = iClienteService.updateCliente(numeroIdentificacion, clienteDTO);</span>
+<span class="nc" id="L33">            return new ResponseEntity(clienteEntityActualizado, HttpStatus.OK);</span>
+<span class="nc" id="L34">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L35">            return new ResponseEntity(&quot;Cliente con ID no encontrado&quot;, HttpStatus.NOT_FOUND);</span>
+<span class="nc" id="L36">        } catch (Exception e) {</span>
+<span class="nc" id="L37">            return new ResponseEntity(&quot;Error al actualizar el cliente&quot;, HttpStatus.INTERNAL_SERVER_ERROR);</span>
+        }
+    }
+
+    @DeleteMapping(&quot;/delete/{numeroIdentificacion}&quot;)
+    public ResponseEntity&lt;String&gt; deleteCliente(@PathVariable String numeroIdentificacion) {
+        try {
+<span class="nc" id="L44">            String mensaje = iClienteService.deleteCliente(numeroIdentificacion);</span>
+<span class="nc" id="L45">            return new ResponseEntity&lt;&gt;(mensaje,HttpStatus.OK);</span>
+<span class="nc" id="L46">        } catch (IllegalArgumentException e) {</span>
+<span class="nc" id="L47">            return new ResponseEntity(&quot;Cliente con ID no encontrado&quot;, HttpStatus.NOT_FOUND);</span>
+<span class="nc" id="L48">        } catch (Exception e) {</span>
+<span class="nc" id="L49">            return new ResponseEntity(&quot;Error al eliminar el cliente&quot;, HttpStatus.INTERNAL_SERVER_ERROR);</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
