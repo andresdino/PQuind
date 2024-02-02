@@ -2,19 +2,28 @@ package com.example.pruebatecnicaquind.Mapper;
 
 import com.example.pruebatecnicaquind.Dto.ProductoDto;
 import com.example.pruebatecnicaquind.Entity.ClienteEntity;
+import com.example.pruebatecnicaquind.Entity.CuentaEntity;
 import com.example.pruebatecnicaquind.Entity.ProductoEntity;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProductoMapper {
 
     public static ProductoEntity dtoToProductoEntity(ProductoDto productoDto) {
-        return ProductoEntity
+        //List<CuentaEntity> cuentaEntities = CuentaMapper.listDtoToListEntity(productoDto.);
+        ProductoEntity productoEntity = new ProductoEntity();
+        productoEntity.setEstado(productoDto.getEstado());
+        productoEntity.setSaldo(productoDto.getSaldo());
+        productoEntity.setNumeroCuenta(productoDto.getNumeroCuenta());
+        productoEntity.setClienteEntity(ClienteEntity
                 .builder()
-                .numeroCuenta(productoDto.getNumeroCuenta())
-                .estado(productoDto.getEstado())
-                .clienteEntity(ClienteEntity
-                        .builder()
-                        .id(productoDto.getClienteId())
-                        .build())
-                .build();
+                .id(productoDto.getClienteId())
+                .build());
+        productoEntity.setFechaCreacion(productoDto.getFechaCreacion());
+        productoEntity.setExentaGMF(productoDto.isExentaGMF());
+
+        return productoEntity;
+
     }
 }
