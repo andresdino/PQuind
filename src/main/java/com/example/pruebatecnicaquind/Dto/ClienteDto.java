@@ -2,6 +2,7 @@ package com.example.pruebatecnicaquind.Dto;
 
 import com.example.pruebatecnicaquind.Entity.Auditoria;
 import com.example.pruebatecnicaquind.Enum.TipoDocumento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,5 +22,6 @@ public class ClienteDto extends Auditoria {
     private  String apellido;
     private  String email;
     private  String fechaNacimiento;
+    @JsonIgnore
     private List<ProductoDto> productoDto;
 }
