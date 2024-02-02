@@ -16,7 +16,7 @@ public class CuentaEntity {
     private Long id;
 
     @Column(name = "tipo_cuenta")
-    private TipoCuenta tipoCuenta;
+    private String tipoCuenta;
 
     @ManyToOne
     @JoinColumn(name = "producto_id")
