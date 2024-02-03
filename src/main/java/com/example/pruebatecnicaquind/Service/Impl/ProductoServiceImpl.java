@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Optional;
-import java.util.Random;
 
 @Service
 public class ProductoServiceImpl implements IProductoService {
@@ -24,22 +23,24 @@ public class ProductoServiceImpl implements IProductoService {
 
     @Autowired
     private CuentaImpl crearCuenta;
+
     @Override
     public Object createCuenta(RequestCuentaClienteDto requestCuentaClienteDto) {
         requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);
         String numeroCuenta;
+
         if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.AHORROS.name())){
             numeroCuenta = crearCuenta.generarNumeroCuentaAleatorio("53");
             requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
             return  crearCuenta.crearCuentaAhorro(requestCuentaClienteDto);
+
         } else if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.CORRIENTE.name())) {
             numeroCuenta = crearCuenta.generarNumeroCuentaAleatorio("33");
             requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);
             return crearCuenta.crearCuentaCorriente(requestCuentaClienteDto);
-        } else{
-            return MessageAplication.CANNOTCREATEDIFFERENTACCOUNT;
-        }
 
+        }
+        return MessageAplication.CANNOTCREATEDIFFERENTACCOUNT;
     }
 
     @Override
@@ -93,7 +94,6 @@ public class ProductoServiceImpl implements IProductoService {
         if (productoEntity.isEmpty()){
             return MessageAplication.ACCOUNTNOTFOUND;
         }
-        // Lógica de retiro
         if (productoEntity.get().getSaldo().compareTo(monto) >= 0) {
             productoEntity.get().setSaldo(productoEntity.get().getSaldo().subtract(monto));
             productoEntity.get().setFechaModificacion(LocalDateTime.now());
@@ -109,13 +109,5 @@ public class ProductoServiceImpl implements IProductoService {
         retirarDinero(origenNumeroCuenta,monto);
         consignarDinero(destinoNumeroCuenta,monto);
     }
-
-
-//    public static String generarNumeroCuentaAleatorio(String prefijo) {
-//        Random random = new Random();
-//        int numeroAleatorio = 10000000 + random.nextInt(90000000);
-//        return prefijo + numeroAleatorio;
-//    }
-
 
 }
