@@ -16,4 +16,8 @@ public class MessageAplication {
     public static String AMOUNTAPPROPRIATIONMUSTBEPOSITIVE = "El monto de consignación debe ser positivo.";
     public static String INSUFFICIENTBALANCE = "Saldo insuficiente para realizar el retiro.";
     public static String CANNOTMINOR = "No puede ser menor de edad.";
+    public static String CANNOTOBTAINED = "No se puede consigar.";
+    public static String CANNOTWITHDRAWN = "No se puede consigar.";
+    public static String SIMULATEDERROR = "Error simulado";
+
 }
