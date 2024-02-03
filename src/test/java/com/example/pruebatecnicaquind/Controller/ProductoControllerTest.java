@@ -164,35 +164,27 @@ class ProductoControllerTest {
 
     @Test
     void transferir_AccountNotFound() {
-        // Configuración del escenario
         String origenCuenta = "123456789";
         String destinoCuenta = "987654321";
         BigDecimal monto = BigDecimal.valueOf(100);
 
-        // Configuración específica para la prueba
         doThrow(new IllegalArgumentException("Cuenta no encontrada")).when(iProductoService).tranferirDinero(any(), any(), any());
 
-        // Llamada al método que queremos probar
         String result = productoController.transferir(origenCuenta, destinoCuenta, monto);
 
-        // Verificación
         assertEquals(MessageAplication.ACCOUNTNOTFOUND, result);
     }
 
     @Test
     void transferir_Exception() {
-        // Configuración del escenario
         String origenCuenta = "123456789";
         String destinoCuenta = "987654321";
         BigDecimal monto = BigDecimal.valueOf(100);
 
-        // Configuración específica para la prueba
         doThrow(new RuntimeException("Error al transferir en la cuenta")).when(iProductoService).tranferirDinero(any(), any(), any());
 
-        // Llamada al método que queremos probar
         String result = productoController.transferir(origenCuenta, destinoCuenta, monto);
 
-        // Verificación
         assertEquals(MessageAplication.ACCOUNTCANCELLED, result);
     }
 }

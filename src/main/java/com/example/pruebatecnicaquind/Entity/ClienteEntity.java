@@ -10,11 +10,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.List;
 
-
-/***
- * class representing the entity cliente in the database
- *
- */
 @Entity
 @Table(name = "cliente")
 @Builder

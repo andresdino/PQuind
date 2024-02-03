@@ -7,7 +7,6 @@ import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 public class ProductoMapper {
 
     public static ProductoEntity dtoToProductoEntity(ProductoDto productoDto) {
-        //List<CuentaEntity> cuentaEntities = CuentaMapper.listDtoToListEntity(productoDto.);
         ProductoEntity productoEntity = new ProductoEntity();
         productoEntity.setEstado(productoDto.getEstado());
         productoEntity.setSaldo(productoDto.getSaldo());

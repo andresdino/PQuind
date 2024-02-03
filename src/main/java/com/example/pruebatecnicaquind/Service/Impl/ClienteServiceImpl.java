@@ -14,10 +14,6 @@ import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.Optional;
 
-/***
- * Service containing the client's service logic
- */
-
 @Service
 public class ClienteServiceImpl implements IClienteService{
 
