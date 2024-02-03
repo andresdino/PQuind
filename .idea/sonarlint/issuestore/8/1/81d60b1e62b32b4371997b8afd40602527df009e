@@ -1,0 +1,13 @@
+
+W	java:S125)"<This block of commented-out lines of code should be removed.(çşÂ-8ÌËğµÖ1
+Q
+java:S1481+"4Remove this unused "saveInformation" local variable.( ¬óÂ8×Š´Ö1
+W
+java:S1481n":Remove this unused "cuentaCorrienteEntity" local variable.(Ğ¶ª¿8Àç´Ö1
+r
+java:S1128"URemove this unused import 'com.example.pruebatecnicaquind.Entity.CuentaAhorroEntity'.(×ÒÅ8€ÂÅ¸Ö1
+
+java:S1128
+"]Remove this unused import 'com.example.pruebatecnicaquind.Repository.CuentaAhorroRepository'.(Ú°áüÿÿÿÿ8‚ÂÅ¸Ö1
+w
+java:S1128"URemove this unused import 'com.example.pruebatecnicaquind.mapper.CuentaAhorroMapper'.(Ãİäûÿÿÿÿ8‚ÂÅ¸Ö1

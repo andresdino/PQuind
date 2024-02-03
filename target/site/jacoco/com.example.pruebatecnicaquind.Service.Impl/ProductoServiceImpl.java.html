@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductoServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PruebaTecnicaQuind</a> &gt; <a href="index.source.html" class="el_package">com.example.pruebatecnicaquind.Service.Impl</a> &gt; <span class="el_source">ProductoServiceImpl.java</span></div><h1>ProductoServiceImpl.java</h1><pre class="source lang-java linenums">package com.example.pruebatecnicaquind.Service.Impl;
+
+import com.example.pruebatecnicaquind.Constans.MessageAplication;
+import com.example.pruebatecnicaquind.Dto.EditarEstadoCuentaDto;
+import com.example.pruebatecnicaquind.Dto.RequestCuentaClienteDto;
+import com.example.pruebatecnicaquind.Entity.ProductoEntity;
+import com.example.pruebatecnicaquind.Enum.EstadoCuenta;
+import com.example.pruebatecnicaquind.Enum.TipoCuenta;
+import com.example.pruebatecnicaquind.Repository.ProductoRepository;
+import com.example.pruebatecnicaquind.Service.IProductoService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Optional;
+
+@Service
+<span class="fc" id="L19">public class ProductoServiceImpl implements IProductoService {</span>
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
+    private CuentaImpl crearCuenta;
+
+    @Override
+    public Object createCuenta(RequestCuentaClienteDto requestCuentaClienteDto) {
+<span class="fc" id="L29">        requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);</span>
+        String numeroCuenta;
+
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.AHORROS.name())){</span>
+<span class="fc" id="L33">            numeroCuenta = crearCuenta.generarNumeroCuentaAleatorio(&quot;53&quot;);</span>
+<span class="fc" id="L34">            requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);</span>
+<span class="fc" id="L35">            return  crearCuenta.crearCuentaAhorro(requestCuentaClienteDto);</span>
+
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        } else if (requestCuentaClienteDto.getTipoCuenta().equals(TipoCuenta.CORRIENTE.name())) {</span>
+<span class="fc" id="L38">            numeroCuenta = crearCuenta.generarNumeroCuentaAleatorio(&quot;33&quot;);</span>
+<span class="fc" id="L39">            requestCuentaClienteDto.getProductoDto().setNumeroCuenta(numeroCuenta);</span>
+<span class="fc" id="L40">            return crearCuenta.crearCuentaCorriente(requestCuentaClienteDto);</span>
+
+        }
+<span class="fc" id="L43">        return MessageAplication.CANNOTCREATEDIFFERENTACCOUNT;</span>
+    }
+
+    @Override
+    public Object updateEstadoCuenta(EditarEstadoCuentaDto editarEstadoCuentaDto) {
+<span class="fc" id="L48">        Optional&lt;ProductoEntity&gt; productoEntity = productoRepository.findProductoEntityByNumeroCuenta(editarEstadoCuentaDto.getNumeroCuenta());</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (productoEntity.isPresent()) {</span>
+<span class="fc" id="L50">            productoEntity.get().setEstado(editarEstadoCuentaDto.getEstado());</span>
+<span class="fc" id="L51">            productoEntity.get().setFechaModificacion(LocalDateTime.now());</span>
+<span class="fc" id="L52">            productoRepository.save(productoEntity.get());</span>
+<span class="fc" id="L53">            return MessageAplication.UPDATEACCOUNTSTATUSCORRECTLY;</span>
+        }
+<span class="fc" id="L55">        return MessageAplication.ACCOUNTNOTFOUND;</span>
+    }
+
+    @Override
+    public Object cancelarCuenta(EditarEstadoCuentaDto editarEstadoCuentaDto) {
+<span class="fc" id="L60">        Optional&lt;ProductoEntity&gt; productoEntity = productoRepository.findProductoEntityByNumeroCuenta(editarEstadoCuentaDto.getNumeroCuenta());</span>
+<span class="fc bfc" id="L61" title="All 2 branches covered.">        if (productoEntity.isPresent()){</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (productoEntity.get().getSaldo().compareTo(BigDecimal.ZERO) == 0) {</span>
+<span class="fc" id="L63">                productoEntity.get().setEstado(EstadoCuenta.CANCELADA);</span>
+<span class="fc" id="L64">                productoEntity.get().setFechaModificacion(LocalDateTime.now());</span>
+<span class="fc" id="L65">                productoRepository.save(productoEntity.get());</span>
+<span class="fc" id="L66">                return MessageAplication.ACCOUNTCANCELLED;</span>
+            }
+<span class="fc" id="L68">            return MessageAplication.ACCOUNTCANNOTCANCELLED;</span>
+        }
+<span class="fc" id="L70">        return MessageAplication.ACCOUNTNOTFOUND;</span>
+    }
+
+    @Override
+    public Object consignarDinero(String numeroCuenta, BigDecimal monto) {
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        if (monto.compareTo(BigDecimal.ZERO) &lt;= 0) {</span>
+<span class="fc" id="L76">           return MessageAplication.AMOUNTAPPROPRIATIONMUSTBEPOSITIVE;</span>
+        }
+
+<span class="fc" id="L79">        Optional&lt;ProductoEntity&gt; productoEntity = productoRepository.findProductoEntityByNumeroCuenta(numeroCuenta);</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (productoEntity.isEmpty()){</span>
+<span class="fc" id="L81">            return MessageAplication.ACCOUNTNOTFOUND;</span>
+        }
+
+<span class="fc" id="L84">        productoEntity.get().setSaldo(productoEntity.get().getSaldo().add(monto));</span>
+<span class="fc" id="L85">        productoEntity.get().setFechaModificacion(LocalDateTime.now());</span>
+
+<span class="fc" id="L87">        return productoRepository.save(productoEntity.get());</span>
+    }
+
+    @Override
+    public Object retirarDinero(String numeroCuenta, BigDecimal monto) {
+<span class="fc" id="L92">        Optional&lt;ProductoEntity&gt; productoEntity = productoRepository.findProductoEntityByNumeroCuenta(numeroCuenta);</span>
+
+<span class="fc bfc" id="L94" title="All 2 branches covered.">        if (productoEntity.isEmpty()){</span>
+<span class="fc" id="L95">            return MessageAplication.ACCOUNTNOTFOUND;</span>
+        }
+<span class="fc bfc" id="L97" title="All 2 branches covered.">        if (productoEntity.get().getSaldo().compareTo(monto) &gt;= 0) {</span>
+<span class="fc" id="L98">            productoEntity.get().setSaldo(productoEntity.get().getSaldo().subtract(monto));</span>
+<span class="fc" id="L99">            productoEntity.get().setFechaModificacion(LocalDateTime.now());</span>
+
+<span class="fc" id="L101">            return productoRepository.save(productoEntity.get());</span>
+        } else {
+<span class="fc" id="L103">            return MessageAplication.INSUFFICIENTBALANCE;</span>
+        }
+    }
+
+    @Override
+    public void tranferirDinero(String origenNumeroCuenta,  String destinoNumeroCuenta, BigDecimal monto) {
+<span class="fc" id="L109">        retirarDinero(origenNumeroCuenta,monto);</span>
+<span class="fc" id="L110">        consignarDinero(destinoNumeroCuenta,monto);</span>
+<span class="fc" id="L111">    }</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CuentaImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PruebaTecnicaQuind</a> &gt; <a href="index.source.html" class="el_package">com.example.pruebatecnicaquind.Service.Impl</a> &gt; <span class="el_source">CuentaImpl.java</span></div><h1>CuentaImpl.java</h1><pre class="source lang-java linenums">package com.example.pruebatecnicaquind.Service.Impl;
+
+import com.example.pruebatecnicaquind.Constans.MessageAplication;
+import com.example.pruebatecnicaquind.Dto.RequestCuentaClienteDto;
+import com.example.pruebatecnicaquind.Entity.CuentaEntity;
+import com.example.pruebatecnicaquind.Entity.ProductoEntity;
+import com.example.pruebatecnicaquind.Enum.EstadoCuenta;
+import com.example.pruebatecnicaquind.Mapper.ProductoMapper;
+import com.example.pruebatecnicaquind.Repository.CuentaRepository;
+import com.example.pruebatecnicaquind.Repository.ProductoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Random;
+
+@Service
+<span class="fc" id="L19">public class CuentaImpl {</span>
+
+    @Autowired
+    private ProductoRepository productoRepository;
+
+    @Autowired
+    private CuentaRepository cuentaRepository;
+
+    public Object crearCuentaAhorro(RequestCuentaClienteDto requestCuentaClienteDto) {
+
+<span class="fc bfc" id="L29" title="All 2 branches covered.">        if (requestCuentaClienteDto.getProductoDto().getSaldo().compareTo(BigDecimal.ZERO) &lt; 0){</span>
+<span class="fc" id="L30">            return MessageAplication.BALANCECANNOTLESS0;</span>
+        }
+
+<span class="fc" id="L33">        requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);</span>
+
+<span class="fc" id="L35">        requestCuentaClienteDto.getProductoDto().setNumeroCuenta(generarNumeroCuentaAleatorio(&quot;53&quot;));</span>
+<span class="fc" id="L36">        requestCuentaClienteDto.getProductoDto().setEstado(EstadoCuenta.ACTIVA);</span>
+<span class="fc" id="L37">        requestCuentaClienteDto.getProductoDto().setFechaCreacion(LocalDateTime.now());</span>
+
+<span class="fc" id="L39">        ProductoEntity producto = ProductoMapper.dtoToProductoEntity(requestCuentaClienteDto.getProductoDto());</span>
+<span class="fc" id="L40">        productoRepository.save(producto);</span>
+
+<span class="fc" id="L42">        CuentaEntity cuentaEntity = new CuentaEntity();</span>
+<span class="fc" id="L43">        cuentaEntity.setTipoCuenta(requestCuentaClienteDto.getTipoCuenta());</span>
+<span class="fc" id="L44">        cuentaEntity.setProductoEntity(producto);</span>
+<span class="fc" id="L45">        cuentaRepository.save(cuentaEntity);</span>
+
+<span class="fc" id="L47">        return MessageAplication.ACCOUNTCREATED;</span>
+    }
+
+    public Object crearCuentaCorriente(RequestCuentaClienteDto requestCuentaClienteDto) {
+
+<span class="fc" id="L52">        requestCuentaClienteDto.getProductoDto().setNumeroCuenta(null);</span>
+
+<span class="fc" id="L54">        requestCuentaClienteDto.getProductoDto().setNumeroCuenta(generarNumeroCuentaAleatorio(&quot;33&quot;));</span>
+<span class="fc" id="L55">        requestCuentaClienteDto.getProductoDto().setEstado(requestCuentaClienteDto.getProductoDto().getEstado());</span>
+<span class="fc" id="L56">        requestCuentaClienteDto.getProductoDto().setFechaCreacion(LocalDateTime.now());</span>
+
+<span class="fc" id="L58">        ProductoEntity producto = ProductoMapper.dtoToProductoEntity(requestCuentaClienteDto.getProductoDto());</span>
+<span class="fc" id="L59">        productoRepository.save(producto);</span>
+
+<span class="fc" id="L61">        CuentaEntity cuentaEntity = new CuentaEntity();</span>
+<span class="fc" id="L62">        cuentaEntity.setTipoCuenta(requestCuentaClienteDto.getTipoCuenta());</span>
+<span class="fc" id="L63">        cuentaEntity.setProductoEntity(producto);</span>
+<span class="fc" id="L64">        cuentaRepository.save(cuentaEntity);</span>
+
+<span class="fc" id="L66">        return MessageAplication.ACCOUNTCREATED;</span>
+    }
+
+
+    public String generarNumeroCuentaAleatorio(String prefijo) {
+<span class="fc" id="L71">        Random random = new Random();</span>
+<span class="fc" id="L72">        int numeroAleatorio = 10000000 + random.nextInt(90000000);</span>
+
+<span class="pc bpc" id="L74" title="1 of 2 branches missed.">        while(productoRepository.existsByNumeroCuenta(prefijo+numeroAleatorio)){</span>
+<span class="nc" id="L75">            numeroAleatorio = 10000000 + random.nextInt(90000000);</span>
+        }
+<span class="fc" id="L77">        return prefijo + numeroAleatorio;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

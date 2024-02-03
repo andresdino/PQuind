@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClienteServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PruebaTecnicaQuind</a> &gt; <a href="index.source.html" class="el_package">com.example.pruebatecnicaquind.Service.Impl</a> &gt; <span class="el_source">ClienteServiceImpl.java</span></div><h1>ClienteServiceImpl.java</h1><pre class="source lang-java linenums">package com.example.pruebatecnicaquind.Service.Impl;
+
+import com.example.pruebatecnicaquind.Constans.MessageAplication;
+import com.example.pruebatecnicaquind.Dto.ClienteDto;
+import com.example.pruebatecnicaquind.Entity.ClienteEntity;
+import com.example.pruebatecnicaquind.Mapper.ClienteMapper;
+import com.example.pruebatecnicaquind.Repository.ClienteRepository;
+import com.example.pruebatecnicaquind.Service.IClienteService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Period;
+import java.util.Optional;
+
+/***
+ * Service containing the client's service logic
+ */
+
+@Service
+<span class="fc" id="L22">public class ClienteServiceImpl implements IClienteService{</span>
+
+    @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Override
+    public Object createCliente(ClienteDto clienteDTO) {
+<span class="fc" id="L29">        Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (!edadValida){</span>
+<span class="fc" id="L31">            return MessageAplication.CANNOTMINOR;</span>
+        }
+
+<span class="fc" id="L34">        clienteDTO.setFechaCreacion(LocalDateTime.now());</span>
+<span class="fc" id="L35">        clienteDTO.setFechaModificacion(null);</span>
+<span class="fc" id="L36">        ClienteEntity saveInformation = ClienteMapper.dtoToClienteEntity(clienteDTO);</span>
+<span class="fc" id="L37">        return clienteRepository.save(saveInformation);</span>
+    }
+
+    @Override
+    public Object updateCliente(String numeroIdentificacion, ClienteDto clienteDTO) {
+<span class="fc" id="L42">        Optional&lt;ClienteEntity&gt; existingClienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion);</span>
+
+<span class="fc" id="L44">        Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (!edadValida){</span>
+<span class="fc" id="L46">            return MessageAplication.CANNOTMINOR;</span>
+        }
+
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (existingClienteEntity.isPresent()){</span>
+<span class="fc" id="L50">            existingClienteEntity.get().setTipoIdentificacion(clienteDTO.getTipoIdentificacion());</span>
+<span class="fc" id="L51">            existingClienteEntity.get().setNumeroIdentificacion(clienteDTO.getNumeroIdentificacion());</span>
+<span class="fc" id="L52">            existingClienteEntity.get().setNombre(clienteDTO.getNombre());</span>
+<span class="fc" id="L53">            existingClienteEntity.get().setApellido(clienteDTO.getApellido());</span>
+<span class="fc" id="L54">            existingClienteEntity.get().setEmail(clienteDTO.getEmail());</span>
+<span class="fc" id="L55">            existingClienteEntity.get().setFechaNacimiento(clienteDTO.getFechaNacimiento());</span>
+<span class="fc" id="L56">            existingClienteEntity.get().setFechaModificacion(LocalDateTime.now());</span>
+<span class="fc" id="L57">            return clienteRepository.save(existingClienteEntity.get());</span>
+        }
+
+<span class="fc" id="L60">        return null;</span>
+    }
+
+    @Override
+    public String deleteCliente(String numeroIdentificacion) {
+<span class="fc" id="L65">        Optional&lt;ClienteEntity&gt; clienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (clienteEntity.isPresent()){</span>
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            if (clienteEntity.get().getProductoEntity().isEmpty()) {</span>
+<span class="fc" id="L69">                clienteRepository.deleteById(clienteEntity.get().getId());</span>
+<span class="fc" id="L70">                return MessageAplication.DELETECLIENT;</span>
+            }
+<span class="fc" id="L72">            return MessageAplication.DELETECLIENTERROR;</span>
+        }
+
+<span class="fc" id="L75">        return MessageAplication.CLIENTNOTFOUND;</span>
+    }
+
+    private Boolean validateEdadCliente(String fechaNacimiento) {
+<span class="fc" id="L79">            LocalDate fechaNac = LocalDate.parse(fechaNacimiento);</span>
+<span class="fc" id="L80">            LocalDate ahora = LocalDate.now();</span>
+<span class="fc" id="L81">            Period periodo = Period.between(fechaNac, ahora);</span>
+<span class="fc" id="L82">            int edad = periodo.getYears();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (edad &lt; 18) {</span>
+<span class="fc" id="L84">                return false;</span>
+            }
+<span class="fc" id="L86">            return true;</span>
+        }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

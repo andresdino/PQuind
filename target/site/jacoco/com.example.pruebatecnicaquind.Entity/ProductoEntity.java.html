@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ProductoEntity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">PruebaTecnicaQuind</a> &gt; <a href="index.source.html" class="el_package">com.example.pruebatecnicaquind.Entity</a> &gt; <span class="el_source">ProductoEntity.java</span></div><h1>ProductoEntity.java</h1><pre class="source lang-java linenums">package com.example.pruebatecnicaquind.Entity;
+
+import com.example.pruebatecnicaquind.Enum.EstadoCuenta;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.math.BigDecimal;
+import java.util.List;
+
+@Entity
+<span class="nc" id="L11">@Builder</span>
+@Inheritance(strategy = InheritanceType.JOINED)
+@Getter
+<span class="pc" id="L14">@Setter</span>
+<span class="fc" id="L15">@NoArgsConstructor</span>
+<span class="nc" id="L16">@AllArgsConstructor</span>
+public class ProductoEntity extends Auditoria{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="nc" id="L20">    private Long id;</span>
+
+    @OneToMany(mappedBy = &quot;productoEntity&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
+<span class="nc" id="L23">    private List&lt;CuentaEntity&gt; cuenta;</span>
+
+    @Column(name = &quot;numero_cuenta&quot;,unique = true, nullable = false)
+<span class="nc" id="L26">    private String numeroCuenta;</span>
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = &quot;estado_cuenta&quot;)
+<span class="nc" id="L30">    private EstadoCuenta estado;</span>
+
+    @Column(name = &quot;saldo_cuenta&quot;)
+<span class="fc" id="L33">    private BigDecimal saldo;</span>
+
+    @Column(name = &quot;exenta_gmf&quot;)
+<span class="nc" id="L36">    private boolean exentaGMF;</span>
+
+    @ManyToOne
+    @JoinColumn(name = &quot;cliente_id&quot;, nullable = false)
+<span class="nc" id="L40">    private ClienteEntity clienteEntity;</span>
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

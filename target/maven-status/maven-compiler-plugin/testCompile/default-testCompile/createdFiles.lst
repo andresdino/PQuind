@@ -1,0 +1,5 @@
+com\example\pruebatecnicaquind\Service\Impl\ProductoServiceImplTest.class
+com\example\pruebatecnicaquind\Controller\ClienteControllerTest.class
+com\example\pruebatecnicaquind\Controller\ProductoControllerTest.class
+com\example\pruebatecnicaquind\Service\Impl\ClienteServiceImplTest.class
+com\example\pruebatecnicaquind\Service\Impl\CuentaImplTest.class
