@@ -2,6 +2,7 @@
 
 import com.example.pruebatecnicaquind.Entity.Auditoria;
 import com.example.pruebatecnicaquind.Enum.TipoDocumento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -9,18 +10,19 @@ import org.hibernate.validator.constraints.Length;
 
 import java.util.List;
 
-<span class="nc" id="L12">@Builder</span>
+<span class="pc" id="L13">@Builder</span>
 @Getter
-<span class="nc" id="L14">@Setter</span>
+<span class="nc" id="L15">@Setter</span>
 public class ClienteDto extends Auditoria {
-<span class="nc" id="L16">    private TipoDocumento tipoIdentificacion;</span>
-<span class="nc" id="L17">    private  String numeroIdentificacion;</span>
+<span class="fc" id="L17">    private TipoDocumento tipoIdentificacion;</span>
+<span class="fc" id="L18">    private  String numeroIdentificacion;</span>
     @Length(message = &quot;El nombre debe tener al menos 2 caracteres&quot;, min = 2)
-<span class="nc" id="L19">    private  String nombre;</span>
+<span class="fc" id="L20">    private  String nombre;</span>
     @Length(message = &quot;El apellido debe tener al menos 2 caracteres&quot;, min = 2)
-<span class="nc" id="L21">    private  String apellido;</span>
-<span class="nc" id="L22">    private  String email;</span>
-<span class="nc" id="L23">    private  String fechaNacimiento;</span>
-<span class="nc" id="L24">    private List&lt;ProductoDto&gt; productoDto;</span>
+<span class="fc" id="L22">    private  String apellido;</span>
+<span class="fc" id="L23">    private  String email;</span>
+<span class="fc" id="L24">    private  String fechaNacimiento;</span>
+    @JsonIgnore
+<span class="nc" id="L26">    private List&lt;ProductoDto&gt; productoDto;</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

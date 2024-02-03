@@ -6,83 +6,85 @@ import com.example.pruebatecnicaquind.Entity.ClienteEntity;
 import com.example.pruebatecnicaquind.Mapper.ClienteMapper;
 import com.example.pruebatecnicaquind.Repository.ClienteRepository;
 import com.example.pruebatecnicaquind.Service.IClienteService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
-import java.util.List;
 import java.util.Optional;
 
+/***
+ * Service containing the client's service logic
+ */
+
 @Service
-<span class="nc" id="L20">public class ClienteServiceImpl implements IClienteService{</span>
+<span class="fc" id="L22">public class ClienteServiceImpl implements IClienteService{</span>
 
     @Autowired
     private ClienteRepository clienteRepository;
 
     @Override
     public Object createCliente(ClienteDto clienteDTO) {
-<span class="nc" id="L27">        Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());</span>
-<span class="nc bnc" id="L28" title="All 2 branches missed.">        if (!edadValida){</span>
-<span class="nc" id="L29">            return &quot;No puede ser menor bpbo hpt&quot;;</span>
+<span class="fc" id="L29">        Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());</span>
+<span class="fc bfc" id="L30" title="All 2 branches covered.">        if (!edadValida){</span>
+<span class="fc" id="L31">            return MessageAplication.CANNOTMINOR;</span>
         }
 
-<span class="nc" id="L32">        clienteDTO.setFechaCreacion(LocalDateTime.now());</span>
-<span class="nc" id="L33">        clienteDTO.setFechaModificacion(null);</span>
-<span class="nc" id="L34">        ClienteEntity saveInformation = ClienteMapper.dtoToClienteEntity(clienteDTO);</span>
-<span class="nc" id="L35">        return clienteRepository.save(saveInformation);</span>
+<span class="fc" id="L34">        clienteDTO.setFechaCreacion(LocalDateTime.now());</span>
+<span class="fc" id="L35">        clienteDTO.setFechaModificacion(null);</span>
+<span class="fc" id="L36">        ClienteEntity saveInformation = ClienteMapper.dtoToClienteEntity(clienteDTO);</span>
+<span class="fc" id="L37">        return clienteRepository.save(saveInformation);</span>
     }
 
     @Override
     public Object updateCliente(String numeroIdentificacion, ClienteDto clienteDTO) {
-<span class="nc" id="L40">        Optional&lt;ClienteEntity&gt; existingClienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion);</span>
+<span class="fc" id="L42">        Optional&lt;ClienteEntity&gt; existingClienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion);</span>
 
-<span class="nc" id="L42">        Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());</span>
-<span class="nc bnc" id="L43" title="All 2 branches missed.">        if (!edadValida){</span>
-<span class="nc" id="L44">             return &quot;No puede ser menor bpbo hpt&quot;;</span>
+<span class="fc" id="L44">        Boolean edadValida = validateEdadCliente(clienteDTO.getFechaNacimiento());</span>
+<span class="fc bfc" id="L45" title="All 2 branches covered.">        if (!edadValida){</span>
+<span class="fc" id="L46">            return MessageAplication.CANNOTMINOR;</span>
         }
 
-<span class="nc bnc" id="L47" title="All 2 branches missed.">        if (existingClienteEntity.isPresent()){</span>
-<span class="nc" id="L48">            existingClienteEntity.get().setTipoIdentificacion(clienteDTO.getTipoIdentificacion());</span>
-<span class="nc" id="L49">            existingClienteEntity.get().setNumeroIdentificacion(clienteDTO.getNumeroIdentificacion());</span>
-<span class="nc" id="L50">            existingClienteEntity.get().setNombre(clienteDTO.getNombre());</span>
-<span class="nc" id="L51">            existingClienteEntity.get().setApellido(clienteDTO.getApellido());</span>
-<span class="nc" id="L52">            existingClienteEntity.get().setEmail(clienteDTO.getEmail());</span>
-<span class="nc" id="L53">            existingClienteEntity.get().setFechaNacimiento(clienteDTO.getFechaNacimiento());</span>
-<span class="nc" id="L54">            existingClienteEntity.get().setFechaModificacion(LocalDateTime.now());</span>
-<span class="nc" id="L55">            return clienteRepository.save(existingClienteEntity.get());</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (existingClienteEntity.isPresent()){</span>
+<span class="fc" id="L50">            existingClienteEntity.get().setTipoIdentificacion(clienteDTO.getTipoIdentificacion());</span>
+<span class="fc" id="L51">            existingClienteEntity.get().setNumeroIdentificacion(clienteDTO.getNumeroIdentificacion());</span>
+<span class="fc" id="L52">            existingClienteEntity.get().setNombre(clienteDTO.getNombre());</span>
+<span class="fc" id="L53">            existingClienteEntity.get().setApellido(clienteDTO.getApellido());</span>
+<span class="fc" id="L54">            existingClienteEntity.get().setEmail(clienteDTO.getEmail());</span>
+<span class="fc" id="L55">            existingClienteEntity.get().setFechaNacimiento(clienteDTO.getFechaNacimiento());</span>
+<span class="fc" id="L56">            existingClienteEntity.get().setFechaModificacion(LocalDateTime.now());</span>
+<span class="fc" id="L57">            return clienteRepository.save(existingClienteEntity.get());</span>
         }
 
-<span class="nc" id="L58">        return null;</span>
+<span class="fc" id="L60">        return null;</span>
     }
 
     @Override
     public String deleteCliente(String numeroIdentificacion) {
-<span class="nc" id="L63">        Optional&lt;ClienteEntity&gt; clienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion);</span>
-<span class="nc bnc" id="L64" title="All 2 branches missed.">        if (clienteEntity.isPresent()){</span>
+<span class="fc" id="L65">        Optional&lt;ClienteEntity&gt; clienteEntity = clienteRepository.findClienteEntityByNumeroIdentificacion(numeroIdentificacion);</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">        if (clienteEntity.isPresent()){</span>
 
-<span class="nc bnc" id="L66" title="All 2 branches missed.">            if (clienteEntity.get().getProductoEntity().isEmpty()) {</span>
-<span class="nc" id="L67">                clienteRepository.deleteById(clienteEntity.get().getId());</span>
-<span class="nc" id="L68">                return MessageAplication.DELETECLIENT;</span>
+<span class="fc bfc" id="L68" title="All 2 branches covered.">            if (clienteEntity.get().getProductoEntity().isEmpty()) {</span>
+<span class="fc" id="L69">                clienteRepository.deleteById(clienteEntity.get().getId());</span>
+<span class="fc" id="L70">                return MessageAplication.DELETECLIENT;</span>
             }
-<span class="nc" id="L70">            return MessageAplication.DELETECLIENTERROR;</span>
+<span class="fc" id="L72">            return MessageAplication.DELETECLIENTERROR;</span>
         }
 
-<span class="nc" id="L73">        return MessageAplication.CLIENTNOTFOUND;</span>
+<span class="fc" id="L75">        return MessageAplication.CLIENTNOTFOUND;</span>
     }
 
     private Boolean validateEdadCliente(String fechaNacimiento) {
-<span class="nc" id="L77">            LocalDate fechaNac = LocalDate.parse(fechaNacimiento);</span>
-<span class="nc" id="L78">            LocalDate ahora = LocalDate.now();</span>
-<span class="nc" id="L79">            Period periodo = Period.between(fechaNac, ahora);</span>
-<span class="nc" id="L80">            int edad = periodo.getYears();</span>
-<span class="nc bnc" id="L81" title="All 2 branches missed.">            if (edad &lt; 18) {</span>
-<span class="nc" id="L82">                return false;</span>
+<span class="fc" id="L79">            LocalDate fechaNac = LocalDate.parse(fechaNacimiento);</span>
+<span class="fc" id="L80">            LocalDate ahora = LocalDate.now();</span>
+<span class="fc" id="L81">            Period periodo = Period.between(fechaNac, ahora);</span>
+<span class="fc" id="L82">            int edad = periodo.getYears();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (edad &lt; 18) {</span>
+<span class="fc" id="L84">                return false;</span>
             }
-<span class="nc" id="L84">            return true;</span>
+<span class="fc" id="L86">            return true;</span>
         }
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

@@ -1,6 +1,8 @@
+com\example\pruebatecnicaquind\Service\Impl\CuentaImpl.class
 com\example\pruebatecnicaquind\Entity\Auditoria.class
 com\example\pruebatecnicaquind\PruebaTecnicaQuindApplication.class
 com\example\pruebatecnicaquind\Service\IClienteService.class
+com\example\pruebatecnicaquind\Mapper\CuentaMapper.class
 com\example\pruebatecnicaquind\Repository\ProductoRepository.class
 com\example\pruebatecnicaquind\Repository\CuentaRepository.class
 com\example\pruebatecnicaquind\Enum\TipoDocumento.class
@@ -22,7 +24,6 @@ com\example\pruebatecnicaquind\Constans\MessageAplication.class
 com\example\pruebatecnicaquind\Dto\RequestCuentaClienteDto.class
 com\example\pruebatecnicaquind\Dto\EditarEstadoCuentaDto.class
 com\example\pruebatecnicaquind\Service\Impl\ClienteServiceImpl.class
-com\example\pruebatecnicaquind\Service\Impl\CuentaAhorroImpl.class
 com\example\pruebatecnicaquind\Entity\ProductoEntity.class
 com\example\pruebatecnicaquind\Entity\ClienteEntity$ClienteEntityBuilder.class
 com\example\pruebatecnicaquind\Dto\ProductoDto.class

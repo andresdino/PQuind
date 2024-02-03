@@ -7,15 +7,20 @@ import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 <span class="nc" id="L7">public class ProductoMapper {</span>
 
     public static ProductoEntity dtoToProductoEntity(ProductoDto productoDto) {
-<span class="nc" id="L10">        return ProductoEntity</span>
-<span class="nc" id="L11">                .builder()</span>
-<span class="nc" id="L12">                .numeroCuenta(productoDto.getNumeroCuenta())</span>
-<span class="nc" id="L13">                .estado(productoDto.getEstado())</span>
-<span class="nc" id="L14">                .clienteEntity(ClienteEntity</span>
-<span class="nc" id="L15">                        .builder()</span>
-<span class="nc" id="L16">                        .id(productoDto.getClienteId())</span>
-<span class="nc" id="L17">                        .build())</span>
-<span class="nc" id="L18">                .build();</span>
+        //List&lt;CuentaEntity&gt; cuentaEntities = CuentaMapper.listDtoToListEntity(productoDto.);
+<span class="fc" id="L11">        ProductoEntity productoEntity = new ProductoEntity();</span>
+<span class="fc" id="L12">        productoEntity.setEstado(productoDto.getEstado());</span>
+<span class="fc" id="L13">        productoEntity.setSaldo(productoDto.getSaldo());</span>
+<span class="fc" id="L14">        productoEntity.setNumeroCuenta(productoDto.getNumeroCuenta());</span>
+<span class="fc" id="L15">        productoEntity.setClienteEntity(ClienteEntity</span>
+<span class="fc" id="L16">                .builder()</span>
+<span class="fc" id="L17">                .id(productoDto.getClienteId())</span>
+<span class="fc" id="L18">                .build());</span>
+<span class="fc" id="L19">        productoEntity.setFechaCreacion(productoDto.getFechaCreacion());</span>
+<span class="fc" id="L20">        productoEntity.setExentaGMF(productoDto.isExentaGMF());</span>
+
+<span class="fc" id="L22">        return productoEntity;</span>
+
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>

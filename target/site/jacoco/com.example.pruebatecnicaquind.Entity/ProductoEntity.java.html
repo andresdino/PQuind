@@ -4,43 +4,41 @@ import com.example.pruebatecnicaquind.Enum.EstadoCuenta;
 import jakarta.persistence.*;
 import lombok.*;
 
-
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-<span class="nc" id="L13">@Builder</span>
+<span class="nc" id="L11">@Builder</span>
 @Inheritance(strategy = InheritanceType.JOINED)
 @Getter
-<span class="nc" id="L16">@Setter</span>
-<span class="nc" id="L17">@NoArgsConstructor</span>
-<span class="nc" id="L18">@AllArgsConstructor</span>
+<span class="pc" id="L14">@Setter</span>
+<span class="fc" id="L15">@NoArgsConstructor</span>
+<span class="nc" id="L16">@AllArgsConstructor</span>
 public class ProductoEntity extends Auditoria{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="nc" id="L22">    private Long id;</span>
+<span class="nc" id="L20">    private Long id;</span>
 
     @OneToMany(mappedBy = &quot;productoEntity&quot;, cascade = CascadeType.ALL, orphanRemoval = true)
-<span class="nc" id="L25">    private List&lt;CuentaEntity&gt; cuenta;</span>
+<span class="nc" id="L23">    private List&lt;CuentaEntity&gt; cuenta;</span>
 
     @Column(name = &quot;numero_cuenta&quot;,unique = true, nullable = false)
-<span class="nc" id="L28">    private String numeroCuenta;</span>
+<span class="nc" id="L26">    private String numeroCuenta;</span>
 
     @Enumerated(EnumType.STRING)
     @Column(name = &quot;estado_cuenta&quot;)
-<span class="nc" id="L32">    private EstadoCuenta estado;</span>
+<span class="nc" id="L30">    private EstadoCuenta estado;</span>
 
     @Column(name = &quot;saldo_cuenta&quot;)
-<span class="nc" id="L35">    private BigDecimal saldo;</span>
+<span class="fc" id="L33">    private BigDecimal saldo;</span>
 
     @Column(name = &quot;exenta_gmf&quot;)
-<span class="nc" id="L38">    private boolean exentaGMF;</span>
+<span class="nc" id="L36">    private boolean exentaGMF;</span>
 
     @ManyToOne
     @JoinColumn(name = &quot;cliente_id&quot;, nullable = false)
-<span class="nc" id="L42">    private ClienteEntity clienteEntity;</span>
+<span class="nc" id="L40">    private ClienteEntity clienteEntity;</span>
 
 
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.7.202105040129</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.11.202310140853</span></div></body></html>
