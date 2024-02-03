@@ -1,51 +1,50 @@
 package com.example.pruebatecnicaquind.Controller;
 
 import com.example.pruebatecnicaquind.Dto.ClienteDto;
-import com.example.pruebatecnicaquind.Entity.ClienteEntity;
 import com.example.pruebatecnicaquind.Service.IClienteService;
+import com.example.pruebatecnicaquind.Constans.MessageAplication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 @RestController
-@RequestMapping("/apí/v1/cliente")
+@RequestMapping("/api/v1/cliente")
 public class ClienteController {
 
     @Autowired
     private IClienteService iClienteService;
 
     @PostMapping("/create")
-    public ResponseEntity<ClienteDto> createCliente(@RequestBody ClienteDto clienteDTO){
+    public String createCliente(@RequestBody ClienteDto clienteDTO){
         try {
-            Object nuevoClienteEntity = iClienteService.createCliente(clienteDTO);
-            return new ResponseEntity(nuevoClienteEntity, HttpStatus.CREATED);
+            iClienteService.createCliente(clienteDTO);
+            return MessageAplication.ACCOUNTCREATED;
         } catch (Exception e) {
-            return new ResponseEntity("Error al crear el cliente", HttpStatus.INTERNAL_SERVER_ERROR);
+            return MessageAplication.ACCOUNTCANNOTCANCELLED;
         }
     }
 
     @PatchMapping("/update/{numeroIdentificacion}")
-    public ResponseEntity<ClienteEntity> updateCliente(@PathVariable String numeroIdentificacion, @RequestBody ClienteDto clienteDTO) {
+    public String updateCliente(@PathVariable String numeroIdentificacion, @RequestBody ClienteDto clienteDTO){
         try {
-            Object clienteEntityActualizado = iClienteService.updateCliente(numeroIdentificacion, clienteDTO);
-            return new ResponseEntity(clienteEntityActualizado, HttpStatus.OK);
+            iClienteService.updateCliente(numeroIdentificacion, clienteDTO);
+            return MessageAplication.UPDATEACCOUNTSTATUSCORRECTLY;
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity("Cliente con ID no encontrado", HttpStatus.NOT_FOUND);
+            return MessageAplication.ACCOUNTNOTFOUND;
         } catch (Exception e) {
-            return new ResponseEntity("Error al actualizar el cliente", HttpStatus.INTERNAL_SERVER_ERROR);
+            return MessageAplication.ACCOUNTCANCELLED;
         }
     }
 
     @DeleteMapping("/delete/{numeroIdentificacion}")
-    public ResponseEntity<String> deleteCliente(@PathVariable String numeroIdentificacion) {
+    public String deleteCliente(@PathVariable String numeroIdentificacion){
         try {
-            String mensaje = iClienteService.deleteCliente(numeroIdentificacion);
-            return new ResponseEntity<>(mensaje,HttpStatus.OK);
+            iClienteService.deleteCliente(numeroIdentificacion);
+            return MessageAplication.ACCOUNTCANCELLED;
         } catch (IllegalArgumentException e) {
-            return new ResponseEntity("Cliente con ID no encontrado", HttpStatus.NOT_FOUND);
+            return MessageAplication.ACCOUNTNOTFOUND;
         } catch (Exception e) {
-            return new ResponseEntity("Error al eliminar el cliente", HttpStatus.INTERNAL_SERVER_ERROR);
+            return MessageAplication.ACCOUNTCANCELLED;
         }
     }
 }
