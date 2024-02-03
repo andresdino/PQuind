@@ -1,0 +1,10 @@
+
+]	java:S125,"<This block of commented-out lines of code should be removed.(úç´£ûÿÿÿÿ8´µ»¸Ö1
+Q
+java:S1481."4Remove this unused "saveInformation" local variable.(©÷ñµ8µµ»¸Ö1
+Y
+java:S1481u"7Remove this unused "cuentaAhorroEntity" local variable.(÷à…Ñÿÿÿÿÿ8½µ»¸Ö1
+l
+java:S1128"ORemove this unused import 'org.springframework.web.bind.annotation.GetMapping'.(‡¡‰Ø8¯Õ÷¸Ö1
+`
+java:S1128"CRemove this unused import 'java.util.concurrent.atomic.AtomicLong'.(Ì™º¢8¯Õ÷¸Ö1
