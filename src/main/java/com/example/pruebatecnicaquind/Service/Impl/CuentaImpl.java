@@ -68,11 +68,9 @@ public class CuentaImpl {
 
 
     public String generarNumeroCuentaAleatorio(String prefijo) {
-        // Generar un número aleatorio de 8 dígitos
         Random random = new Random();
         int numeroAleatorio = 10000000 + random.nextInt(90000000);
 
-        // Formatear el número de cuenta con el prefijo "53"
         while(productoRepository.existsByNumeroCuenta(prefijo+numeroAleatorio)){
             numeroAleatorio = 10000000 + random.nextInt(90000000);
         }
