@@ -1,8 +1,12 @@
 package com.example.pruebatecnicaquind.Service.Impl;
 
+import com.example.pruebatecnicaquind.Constans.MessageAplication;
 import com.example.pruebatecnicaquind.Dto.EditarEstadoCuentaDto;
+import com.example.pruebatecnicaquind.Dto.ProductoDto;
+import com.example.pruebatecnicaquind.Dto.RequestCuentaClienteDto;
 import com.example.pruebatecnicaquind.Entity.ProductoEntity;
 import com.example.pruebatecnicaquind.Enum.EstadoCuenta;
+import com.example.pruebatecnicaquind.Enum.TipoCuenta;
 import com.example.pruebatecnicaquind.Repository.CuentaRepository;
 import com.example.pruebatecnicaquind.Repository.ProductoRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -17,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -31,27 +36,51 @@ class ProductoServiceImplTest {
     @Mock
     private CuentaRepository cuentaRepository;
 
-    @InjectMocks
-    private ProductoServiceImpl productoService;
-
     @Mock
     private CuentaImpl cuentaServiceMock;
 
-
+    @InjectMocks
+    private ProductoServiceImpl productoService;
 
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
-    @AfterEach
-    void tearDown() {
-    }
+    @Test
+    void CrearDiferente(){
+        RequestCuentaClienteDto requestDto = new RequestCuentaClienteDto();
+        ProductoDto productoDto = new ProductoDto();
+        requestDto.setProductoDto(productoDto);
+        requestDto.setTipoCuenta("abc");
 
+        Object result = productoService.createCuenta(requestDto);
+    }
 
     @Test
-    public void createCuentaAhorros() {
+    void crearCuentaAhorro() {
+        RequestCuentaClienteDto requestDto = new RequestCuentaClienteDto();
+        ProductoDto productoDto = new ProductoDto();
+        requestDto.setTipoCuenta(TipoCuenta.AHORROS.name());
+        requestDto.setProductoDto(productoDto);
+
+        productoDto.setSaldo(BigDecimal.valueOf(-100));
+
+        Object result = productoService.createCuenta(requestDto);
+
     }
+
+    @Test
+    void crearCuentaCorriente() {
+        RequestCuentaClienteDto requestDto = new RequestCuentaClienteDto();
+        ProductoDto productoDto = new ProductoDto();
+        requestDto.setTipoCuenta(TipoCuenta.CORRIENTE.name());
+        requestDto.setProductoDto(productoDto);
+
+        Object result = productoService.createCuenta(requestDto);
+
+    }
+
 
     @Test
     void createCuentaCorriente() {
