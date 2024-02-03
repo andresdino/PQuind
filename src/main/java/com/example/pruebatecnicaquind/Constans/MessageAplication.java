@@ -9,6 +9,7 @@ public class MessageAplication {
     public static String CLIENTNOTFOUND = "No se encontro el cliente a eliminar";
     public static String ACCOUNTCANNOTCANCELLED  = "No se puede cancelar la cuenta";
     public static String ACCOUNTCANCELLED  = "Cuenta Cancelada";
+    public static String ACCOUNTDELETED = "Cuenta eliminada";
     public static String ACCOUNTCREATED = "Cuenta Creada";
     public static String CANNOTCREATEDIFFERENTACCOUNT  = "No se puede crear la cuenta";
     public static String UPDATEACCOUNTSTATUSCORRECTLY = "Se actualizo el estado de la cuenta correctamente";
