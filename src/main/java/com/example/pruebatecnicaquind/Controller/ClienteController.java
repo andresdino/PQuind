@@ -1,16 +1,12 @@
 package com.example.pruebatecnicaquind.Controller;
 
 import com.example.pruebatecnicaquind.Dto.ClienteDto;
-
 import com.example.pruebatecnicaquind.Entity.ClienteEntity;
-import com.example.pruebatecnicaquind.Repository.ProductoRepository;
 import com.example.pruebatecnicaquind.Service.IClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Random;
 
 @RestController
 @RequestMapping("/apí/v1/cliente")

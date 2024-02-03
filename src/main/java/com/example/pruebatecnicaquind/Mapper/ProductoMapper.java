@@ -2,11 +2,7 @@ package com.example.pruebatecnicaquind.Mapper;
 
 import com.example.pruebatecnicaquind.Dto.ProductoDto;
 import com.example.pruebatecnicaquind.Entity.ClienteEntity;
-import com.example.pruebatecnicaquind.Entity.CuentaEntity;
 import com.example.pruebatecnicaquind.Entity.ProductoEntity;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class ProductoMapper {
 

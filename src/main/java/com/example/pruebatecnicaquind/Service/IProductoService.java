@@ -2,7 +2,6 @@ package com.example.pruebatecnicaquind.Service;
 
 import com.example.pruebatecnicaquind.Dto.EditarEstadoCuentaDto;
 import com.example.pruebatecnicaquind.Dto.RequestCuentaClienteDto;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.math.BigDecimal;
 
